@@ -1,1 +1,51 @@
-<p>eventos works!</p>
+<div class="container-fluid">
+  <h5>Listado de eventos disponibles</h5>
+
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <!-- <button mat-fab extended class="fw-bold w-100 bg-success text-white" (click)="abrirModal()">
+        <mat-icon class="text-white">playlist_add</mat-icon>
+        Crear nueva actividad
+      </button> -->
+
+      <button mat-fab extended class="fw-bold w-100 bg-success text-white">
+        <mat-icon class="text-white">playlist_add</mat-icon>
+        Crear nuevo evento
+      </button>
+
+    </div>
+
+  </div>
+  <hr class="my-4">
+
+  <div class="row">
+    <div class="col-12 col-md-3 mb-2 d-flex align-items-stretch" *ngFor="let evento of eventos">
+      <div class="w-100 mb-2 d-flex align-items-stretch">
+        <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="fs-min w-100">{{evento.nombre}}</strong>
+            <small class="ms-2 p-0">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon class="text-warning">edit</mat-icon>
+                  <span class="fw-bold">modificar</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon class="text-danger">visibility_off</mat-icon>
+                  <span class="fw-bold">baja evento</span>
+                </button>
+              </mat-menu>
+            </small>
+          </div>
+          <div class="toast-body fs-min">
+            <span class="w-100">Desde: {{ evento.fechaDesde }}</span>
+            <span class="w-100">Hasta: {{ evento.fechaHasta }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
