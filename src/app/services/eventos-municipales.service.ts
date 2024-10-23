@@ -10,7 +10,7 @@ export class EventosMunicipalesService {
     {
       id: 1,
       nombre: 'Actividades Generales',
-      imagen: '',
+      imagen: 'img/municipalidad/ferroH.png',
       fechaDesde: null,
       fechaHasta: null,
       activo: 'True',
@@ -18,7 +18,7 @@ export class EventosMunicipalesService {
     {
       id: 2,
       nombre: 'OktoberFest',
-      imagen: '',
+      imagen: 'img/oktoberfest/logoOktoberH.png',
       fechaDesde: null,
       fechaHasta: null,
       activo: 'True',
