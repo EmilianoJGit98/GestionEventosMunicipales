@@ -1,22 +1,18 @@
 <div class="container-fluid">
   <h5>Listado de eventos disponibles</h5>
 
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-12 col-md-3">
       <!-- <button mat-fab extended class="fw-bold w-100 bg-success text-white" (click)="abrirModal()">
         <mat-icon class="text-white">playlist_add</mat-icon>
         Crear nueva actividad
       </button> -->
-
-      <button mat-fab extended class="fw-bold w-100 bg-success text-white">
-        <mat-icon class="text-white">playlist_add</mat-icon>
+      <button class="fw-bold w-100 btn bg-success text-white d-flex justify-content-center shadow">
+        <mat-icon class="text-white me-3">playlist_add</mat-icon>
         Crear nuevo evento
       </button>
-
     </div>
-
   </div>
-  <hr class="my-4">
 
   <div class="row">
     <div class="col-12 col-md-3 mb-2 d-flex align-items-stretch" *ngFor="let evento of eventos">
