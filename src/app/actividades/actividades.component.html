@@ -1,1 +1,42 @@
-<p>actividades works!</p>
+
+<div class="row">
+  <h5 class="fs-alto fw-bold">Listado de Actividades Disponibles</h5>
+  <hr class="p-4l">
+  <div class="col-12 col-md-4 mb-2 d-flex align-items-stretch mb-3" *ngFor="let actividad of arrayActividades">
+    <div class="w-100 mb-2 d-flex align-items-stretch">
+      <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="fs-min w-100">{{actividad.descripcion}}</strong>
+          <small class="ms-2 p-0">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="border bg-light shadow">
+              <h5 class="w-100 fs-med text-center bg-dark text-white m-0 px-5">ID: {{actividad.idSubRubro}}</h5>
+              <!-- <button mat-menu-item (click)="abrirModalUpdate(actividad.id)">
+                <mat-icon class="text-warning">edit</mat-icon>
+                <span class="fw-bold">Modificar</span>
+              </button> -->
+              <button mat-menu-item>
+                <mat-icon class="text-warning">edit</mat-icon>
+                <span class="fw-bold">modificar</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon class="text-danger">visibility_off</mat-icon>
+                <span class="fw-bold">Ocultar</span>
+              </button>
+            </mat-menu>
+          </small>
+        </div>
+        <div class="toast-header fs-min p-0">
+          <!-- <img class="" [src]="evento.imagen | decodebase64:'png'"> -->
+        </div>
+        <div class="toast-body fs-min">
+          <span class="w-100">Id: {{ actividad.idSubRubro }}</span>
+          <!-- <span class="w-100">Hasta: {{ actividad.fechaHasta }}</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

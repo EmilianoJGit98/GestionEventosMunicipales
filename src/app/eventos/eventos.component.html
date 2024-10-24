@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h5>Listado de eventos disponibles</h5>
+  <h5 class="fs-alto fw-bold">Listado de eventos disponibles</h5>
 
   <div class="row mb-3">
     <div class="col-12 col-md-3">
@@ -37,11 +37,15 @@
                   <mat-icon class="text-danger">visibility_off</mat-icon>
                   <span class="fw-bold">baja evento</span>
                 </button>
+                <button mat-menu-item [routerLink]="['/actividades', evento.id]" routerLinkActive="active" >
+                  <mat-icon class="text-primary">confirmation_number</mat-icon>
+                  <span class="fw-bold">Ver Actividades disponibles</span>
+                </button>
               </mat-menu>
             </small>
           </div>
           <div class="toast-header fs-min p-0">
-            <img class="" src="{{evento.imagen}}">
+            <img class="" [src]="evento.imagen | decodebase64:'png'">
           </div>
           <div class="toast-body fs-min">
             <span class="w-100">Desde: {{ evento.fechaDesde }}</span>

@@ -1,12 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
-* {
-  font-family: "Montserrat", sans-serif;
+mat-icon{
+  font-family: 'Material Icons' !important;
+}
+
+
+body {
+  font-family: "Montserrat", sans-serif !important;
 }
 
 body {
   margin: 0;
 }
+
 
 .fs-min {
   font-size: 0.8rem !important;

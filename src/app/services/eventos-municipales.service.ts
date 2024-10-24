@@ -1,31 +1,20 @@
+import { EventoInterface } from './../Models/eventos.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+
+
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class EventosMunicipalesService {
-  constructor() {}
+  private apiUrl = 'http://192.168.0.248:8000/api/eventos';
 
-  eventos = [
-    {
-      id: 1,
-      nombre: 'Actividades Generales',
-      imagen: 'img/municipalidad/ferroH.png',
-      fechaDesde: null,
-      fechaHasta: null,
-      activo: 'True',
-    },
-    {
-      id: 2,
-      nombre: 'OktoberFest',
-      imagen: 'img/oktoberfest/logoOktoberH.png',
-      fechaDesde: null,
-      fechaHasta: null,
-      activo: 'True',
-    },
-  ];
+  constructor(private http: HttpClient) { }
 
-  getEventos() {
-    return this.eventos;
+  getEventos(): Observable<EventoInterface[]> {
+    return this.http.get<EventoInterface[]>(this.apiUrl);
   }
+
 }

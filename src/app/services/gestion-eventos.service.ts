@@ -8,11 +8,11 @@ export class EventosDisplayService {
   constructor(private eventosMunicipalesService: EventosMunicipalesService) {}
 
   // Método para obtener los eventos
-  ListarEventos() {
-    return this.eventosMunicipalesService
-      .getEventos()
-      .filter((evento) => evento.activo === 'True');
-  }
+  // ListarEventos() {
+  //   return this.eventosMunicipalesService
+  //     .getEventos()
+  //     .filter((evento) => evento.activo === 'True');
+  // }
 
   // Otros métodos para manipular eventos pueden ir aquí
 }
