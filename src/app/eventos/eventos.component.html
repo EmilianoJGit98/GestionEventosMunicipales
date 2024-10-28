@@ -7,9 +7,13 @@
         <mat-icon class="text-white">playlist_add</mat-icon>
         Crear nueva actividad
       </button> -->
-      <button class="fw-bold w-100 btn bg-success text-white d-flex justify-content-center shadow">
+      <!-- <button class="fw-bold w-100 btn bg-success text-white d-flex justify-content-center shadow" (click)="AbrirModal()">
         <mat-icon class="text-white me-3">playlist_add</mat-icon>
         Crear nuevo evento
+      </button> -->
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-success d-flex align-items-center fw-bold" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <mat-icon class="text-white m-0 me-3">playlist_add</mat-icon> Crear Evento
       </button>
     </div>
   </div>
@@ -19,7 +23,7 @@
       <div class="w-100 mb-2 d-flex align-items-stretch">
         <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
-            <strong class="fs-min w-100">{{evento.nombre}}</strong>
+            <strong class="fs-min w-100">{{ evento.nombre }}</strong>
             <small class="ms-2 p-0">
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
@@ -37,7 +41,7 @@
                   <mat-icon class="text-danger">visibility_off</mat-icon>
                   <span class="fw-bold">baja evento</span>
                 </button>
-                <button mat-menu-item [routerLink]="['/actividades', evento.id]" routerLinkActive="active" >
+                <button mat-menu-item [routerLink]="['/actividades', evento.id]" routerLinkActive="active">
                   <mat-icon class="text-primary">confirmation_number</mat-icon>
                   <span class="fw-bold">Ver Actividades disponibles</span>
                 </button>
@@ -45,13 +49,73 @@
             </small>
           </div>
           <div class="toast-header fs-min p-0">
-            <img class="" [src]="evento.imagen | decodebase64:'png'">
+            <img class="" [src]="evento.imagen | decodebase64 : 'png'" />
           </div>
           <div class="toast-body fs-min">
             <span class="w-100">Desde: {{ evento.fechaDesde }}</span>
             <span class="w-100">Hasta: {{ evento.fechaHasta }}</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content ">
+      <div class="modal-header py-1 border-0">
+        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="exampleModalLabel" style="font-family: 'Montserrat';">Crear nuevo evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formAltaEvento" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control border-0 rounded-0 border-bottom border-2 shadow fw-bold" id="nombre" formControlName="nombre" placeholder="" />
+              <label class="fw-bold fs-min" for="nombre">Nombre del Evento</label>
+              <div class="fs-min text-white bg-danger p-0 mt-1 shadow px-3 fw-bold" *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">Debe completar este campo.</div>
+            </div>
+
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-floating mb-3">
+              <input type="date" class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow fw-bold" formControlName="fechaDesde" id="fechaDesde" placeholder="" />
+              <label class="fw-bold fs-min" for="fechaDesde">Inicio</label>
+              <div class="fs-min text-white bg-danger p-0 mt-1 shadow px-3 fw-bold" *ngIf="formAltaEvento.get('fechaDesde')?.errors?.['required']">Debe completar este campo.</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-floating mb-3">
+              <input type="date" class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow fw-bold" formControlName="fechaHasta" id="fechaHasta" placeholder="" />
+              <label class="fw-bold fs-min" for="fechaHasta">Finalización</label>
+              <div class="fs-min text-white bg-danger p-0 mt-1 shadow px-3" *ngIf="formAltaEvento.get('fechaHasta')?.errors?.['required']">Debe completar este campo.</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-12">
+            <!-- <div class="form-floating mb-3"> -->
+              <label class="fw-bold fs-min" for="imagen">Cargar imagen del Evento</label>
+              <input type="file" class="form-control fs-min border rounded-0 shadow fw-bold" id="imagen" placeholder="" />
+
+            <!-- </div> -->
+          </div>
+
+          <div class="col-12 col-md-12 text-center">
+            <div class="form-check form-switch mt-3 d-flex justify-content-center">
+              <label class="form-check-label mt-1 me-5 fw-bold fs-min" for="activo" style="cursor: pointer;">Evento Activo</label>
+              <input class="form-check-input mt-2 me-5" type="checkbox" id="activo" checked>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-sm btn-success" [disabled]="formAltaEvento.invalid">Guardar</button>
       </div>
     </div>
   </div>

@@ -9,3 +9,9 @@ img{
       object-position: center center;
     }
 }
+
+.form-check-input:checked {
+  background-color: #1ca470;
+  border-color: #1ca470;
+}
+
