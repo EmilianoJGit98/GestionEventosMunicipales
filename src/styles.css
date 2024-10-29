@@ -8,6 +8,11 @@
   font-family: 'Material Icons';
 }
 
+.fs-min- {
+  font-size: 0.6rem !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
 
 .fs-min {
   font-size: 0.8rem !important;

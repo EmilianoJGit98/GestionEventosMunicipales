@@ -1,13 +1,13 @@
-img{
+img {
   width: 100%;
   height: auto;
 }
-@supports(object-fit: cover){
-    .box img{
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-    }
+@supports (object-fit: cover) {
+  .box img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
 }
 
 .form-check-input:checked {
@@ -15,3 +15,112 @@ img{
   border-color: #1ca470;
 }
 
+
+.input {
+  width: 100% !important;
+  display: none;
+}
+
+.inputVacio {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 90px;
+  border-radius: 5px;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  color: #404040;
+  cursor: pointer;
+  /* background-image: linear-gradient(to right, #eaeaea, #c9c9c9, #a9a9a9, #909090); */
+  box-shadow:0 0.125rem 0.25rem #00000038;
+}
+
+.inputVacio:hover{
+  background-position: 100% 0;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+/* .labelFile i{
+  margin-top: 10px !important;
+  font-size: 50px !important;
+  margin-bottom: 10px !important;
+} */
+
+.inputCargado {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 90px;
+  border-radius: 5px;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  color: #0a6523;
+  cursor: pointer;
+  /* background-image: linear-gradient(to right, #eaeaea, #c9c9c9, #a9a9a9, #909090); */
+  box-shadow: 0 4px 15px 0 #a9a9a9;
+}
+
+.fa-check-circle{
+  margin-top: 15px !important;
+  font-size: 30px !important;
+  background: #0a6523 !important;
+  color: white !important;
+  border-radius: 70%;
+  border: solid 1px #0a6523;
+}
+
+.sinArchivo {
+  background-color: red;   /* Cambia el color de fondo si no hay archivo cargado */
+  color: white;            /* Cambia el color de texto */
+}
+
+button {
+  margin-top: 10px;        /* Espaciado superior para el botón */
+  padding: 10px;           /* Relleno del botón */
+  border: none;            /* Sin borde */
+  cursor: pointer;         /* Cambia el cursor a mano al pasar sobre el botón */
+  border-radius: 5px;     /* Borde redondeado */
+}
+
+input[type="file"] {
+  margin-bottom: 10px;     /* Espaciado inferior para el input */
+}
+
+.imgPrevisualizacion{
+  width: 25%;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 15px 0 #a9a9a964;
+  border: solid 1px #a9a9a9;
+}
+
+.btnReset{
+  position: relative;
+  top: -40px;
+  right: 20px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow:  0 4px 15px 0 #a9a9a9;
+  font-size: 1.4rem;
+  color: #fff;
+  background: #ca3838;
+}
+
+
+@media (max-width:768px) {
+  .btnReset{
+    position: relative !important;
+    top: 30px !important;
+    box-shadow:  0 4px 15px 0 #a9a9a9;
+  }
+ }
