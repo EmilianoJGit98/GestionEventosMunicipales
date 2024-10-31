@@ -14,3 +14,7 @@
   /* border-radius: 3px !important; */
   /* width: 100%; */
 }
+
+.swal2-title{
+  font-family: 'Montserrat', sans-serif !important;
+}

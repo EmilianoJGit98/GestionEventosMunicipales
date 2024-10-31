@@ -9,7 +9,6 @@ import { RouterModule } from '@angular/router';
 import { Decodebase64Pipe } from '../pipes/decodebase64.pipe';
 import { EventosMunicipalesService } from '../services/eventos-municipales.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { AddEventoComponent } from './add-evento/add-evento.component';
 import { MatDialog } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -17,6 +16,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { EventosDisplayService } from '../services/gestion-eventos.service';
 
 @Component({
   selector: 'app-eventos',
@@ -44,13 +44,15 @@ export class EventosComponent {
 
   constructor(
     private servEventos: EventosMunicipalesService,
-    private BuildForm: FormBuilder // private addModal: MatDialog, // private getListEventos: EventosDisplayService
+    private BuildForm: FormBuilder, // private addModal: MatDialog, // private getListEventos: EventosDisplayService
+    private gestionEventos: EventosDisplayService
   ) {
     this.formAltaEvento = this.BuildForm.group({
       nombre: ['', [Validators.required]],
       fechaDesde: ['', [Validators.required]],
       fechaHasta: ['', [Validators.required]],
       imagen: ['', [Validators.required]],
+      activo: ['true']
     });
   }
 
@@ -84,6 +86,7 @@ export class EventosComponent {
       reader.onload = (e: any) => {
         const base64String = e.target.result; // Esto es el base64
         this.previsualizacion = e.target.result;
+        this.formAltaEvento.get('imagen')?.setValue(base64String);
         //console.log('Base64:', base64String);
       };
       reader.readAsDataURL(file); // Leer el archivo y convertirlo a Base64
@@ -102,11 +105,29 @@ export class EventosComponent {
 
   onSubmit() {
     if (this.formAltaEvento.valid) {
-      // const formData = this.registroForm.value;
-      // this.dataRegistro.updateFormData(formData); //actualizar los datos de la persona en el servicio
-      // this.router.navigate(['/actividades'], {
-      //   queryParams: { IDevento: this.IDevento },
-      // });
+      if (this.formAltaEvento.valid) {
+        const formData = this.formAltaEvento.value;
+
+        this.gestionEventos.altaEvento(this.formAltaEvento.value).subscribe({
+          next: (res: any) => {
+            // this.participanteId = res.participante;
+            // this.createCheckoutButton(res.id);
+            console.log("next")
+          },
+          complete: () => {
+            console.log("complete")
+            // this.cargando = false;
+          },
+          error: (error: any) => {
+            // this.router.navigate(['/pago-rechazado/' + this.IDevento]);
+            // this.router.navigate(['/rechazado']);
+            console.log("error")
+            // this.cargando = false;
+          },
+        });
+        } else {
+        console.log('El formulario no es válido');
+        }
     }
   }
 }

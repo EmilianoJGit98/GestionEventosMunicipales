@@ -29,6 +29,18 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+.family-montserrat{
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.bg-azul{
+  background: #07456B !important;
+  color: white !important;
+}
+
+.color-azul{
+  color: #07456B !important;
+}
 
 html, body { height: 100%; }
 body { margin: 0; }
