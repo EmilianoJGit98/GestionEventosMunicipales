@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
-import { ActividadesServ } from '../services/actividades-municipales.service';
+import { ActividadesServ } from '../../services/actividades-municipales.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'; // Importar HttpClientModule
 import { MatIconModule } from '@angular/material/icon';

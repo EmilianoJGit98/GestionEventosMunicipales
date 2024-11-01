@@ -6,33 +6,29 @@ import { FormBuilder, FormGroup, FormsModule, NgModel } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-
-
+import { AuthTokenService } from '../../services/auth-token.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
-  loginObj:any = {
+  loginObj: any = {
     "username": "",
     "password": "",
     "client_secret": "280",
   }
 
-
-  // formLogin: FormGroup;
-
-  constructor(private authService: AuthService, private router: Router){};
+  constructor(private authService: AuthService, private router: Router, private tokenService: AuthTokenService) { }
 
   onLogin() {
     this.authService.login(this.loginObj.username, this.loginObj.password).subscribe((res: any) => {
       if (res.detail === "OK") {
-        console.log(res)
+        // Llamar a onLoginResponse para guardar el token
+        this.onLoginResponse(res);
 
         Swal.fire({
           icon: 'success',
@@ -46,61 +42,30 @@ export class LoginComponent {
           showCloseButton: true
         });
 
-        this.router.navigate(['/dashboard']);
+        this.router.navigateByUrl("dashboard");
       }
     }, (error) => {
       console.error('Error en la autenticación:', error);
-      // alert("Ocurrió un error al intentar iniciar sesión, berifique el usuario y contraseña.");
       Swal.fire({
         icon: 'error',
         title: '',
-        text: 'Ocurrió un error al intentar iniciar sesión, berifique el usuario y contraseña',
+        text: 'Ocurrió un error al intentar iniciar sesión, verifique el usuario y contraseña',
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        // timer: 3000,
         timerProgressBar: true,
         showCloseButton: true
       });
     });
   }
 
+  private onLoginResponse(tokenData: any): void {
+    this.tokenService.saveToken(tokenData.access_token); // Asegúrate de que esto coincide con la respuesta real
+    this.tokenService.saveUsername(tokenData.aditional_info.username); // Almacena el nombre de usuario
+    this.tokenService.saveTokenType(tokenData.token_type); // Almacena el nombre de usuario
 
-  // http = inject(HttpClient);
-
-  // onLogin() {
-  //   // Convirtiendo loginObj a application/x-www-form-urlencoded
-  //   const body = new URLSearchParams();
-
-  //   for (const key in this.loginObj) {
-  //     if (this.loginObj.hasOwnProperty(key) && this.loginObj[key] !== undefined) {
-  //       body.append(key, this.loginObj[key]);
-  //     }
-  //   }
-
-  //   console.log(this.loginObj);
-
-  //   this.http.post('http://192.168.0.248:8000/api/auth', body.toString(), {
-  //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  //   }).subscribe((res: any) => {
-  //     if (res.detail === "OK") {
-  //       alert("clave correcta");
-  //     } else if(res.status === 400) {
-  //       alert("clave incorrecta");
-  //     }
-  //   });
-  // }
-
-  // onLogin(){
-  //   // debugger;
-  //   console.log(this.loginObj)
-  //   this.http.post('http://192.168.0.248:8000/api/auth', JSON.stringify(this.loginObj)).subscribe((res:any)=>{
-  //     if (res.token) {
-  //       alert("loginOK");
-  //     } else {
-  //       alert("error login");
-  //     }
-  //   })
-  // }
-
+    // console.log("Token guardado:", this.tokenService.getAccessToken());
+    // console.log("Usuario:", this.tokenService.getUsername());
+    // console.log("Type:", this.tokenService.getTokenType());
+  }
 }

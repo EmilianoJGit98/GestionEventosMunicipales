@@ -1,9 +1,43 @@
-<div class="row d-flex" style="height: 100%;">
+<!-- <div class="row d-flex" style="height: 100%;">
   <div class="col-2"><app-header></app-header></div>
   <div class="col-10 p-3">
-      <router-outlet style="width: 100%;"></router-outlet>
+      <router-outlet></router-outlet>
+  </div>
+</div> -->
+
+<div class="row" style="height: 100%;">
+  <div class="col-2">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="height: 100%;">
+      <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none fw-bold" routerLink="/dashboard">
+        <img class="d-none d-lg-block me-3" src="img/muniSistemas.png" width="40px">
+        <span class="fs-6">Eventos Municipales</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-bold text-white" [routerLink]="['dashboard/eventos']" routerLinkActive="active">
+            <i class="far fa-calendar-alt"></i>
+            Listado de Eventos
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <strong><i class="fas fa-user-circle"></i> Sesión</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" routerLink="closeSesion"><i class="fas fa-power-off"></i> Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-10 p-3">
+    <router-outlet/>
   </div>
 </div>
+
+
 
 
 

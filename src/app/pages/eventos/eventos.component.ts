@@ -1,22 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { EventoInterface } from '../Models/eventos.model';
 // import { EventosDisplayService } from '../services/gestion-eventos.service';
+import { EventosMunicipalesService } from '../../../../../../AngularBackups/checkout-payment/src/app/servicios/eventos-municipales.service';
+import { EventoInterface } from '../../../../../../AngularBackups/checkout-payment/src/app/models/eventos.model';
+import { Decodebase64Pipe } from '../../../../../../AngularBackups/checkout-payment/src/pipes/decodebase64.pipe';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { Decodebase64Pipe } from '../pipes/decodebase64.pipe';
-import { EventosMunicipalesService } from '../services/eventos-municipales.service';
+
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { EventosDisplayService } from '../../services/gestion-eventos.service';
+
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { EventosDisplayService } from '../services/gestion-eventos.service';
+
 
 @Component({
   selector: 'app-eventos',
