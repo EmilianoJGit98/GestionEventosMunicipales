@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class ActividadesServ {
 
-  private api = 'http://192.168.0.248:8000/api/eventos/';
+  // private api = 'http://192.168.0.248:8000/api/eventos/';
+  private api = 'http://192.168.0.77:8000/api/eventos/';
 
   constructor(private http: HttpClient) { }
 

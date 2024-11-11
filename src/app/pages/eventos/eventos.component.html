@@ -1,59 +1,81 @@
 <div class="container-fluid">
-  <h5 class="fs-alto fw-bold family-montserrat">Listado de eventos disponibles</h5>
-
+  <h5 class="fs-med fw-bold family-montserrat">
+    Listado de eventos disponibles
+  </h5>
+  <hr class="p-4l" />
   <div class="row mb-3">
     <div class="col-12 col-md-3">
-      <!-- <button mat-fab extended class="fw-bold w-100 bg-success text-white" (click)="abrirModal()">
-        <mat-icon class="text-white">playlist_add</mat-icon>
-        Crear nueva actividad
-      </button> -->
-      <!-- <button class="fw-bold w-100 btn bg-success text-white d-flex justify-content-center shadow" (click)="AbrirModal()">
-        <mat-icon class="text-white me-3">playlist_add</mat-icon>
-        Crear nuevo evento
-      </button> -->
-      <!-- Button trigger modal -->
       <button type="button" class="btn btn-success d-flex align-items-center fw-bold" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        <mat-icon class="text-white m-0 me-3">playlist_add</mat-icon> Crear nuevo evento
+        <mat-icon class="text-white m-0 me-3">playlist_add</mat-icon> Crear
+        nuevo evento
       </button>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-12 col-md-3 mb-2 d-flex align-items-stretch" *ngFor="let evento of eventos">
+    <div class="col-12 col-md-3 col-lg-4 col-xl-2 mb-2 d-flex align-items-stretch" *ngFor="let evento of eventos">
       <div class="w-100 mb-2 d-flex align-items-stretch">
         <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header py-0">
             <strong class="fs-min w-100">{{ evento.nombre }}</strong>
-            <small class="ms-2 p-0">
+            <div class="dropdown">
+              <button class="btn btn-sm mb-2 fs-med" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal" data-bs-target="#modalId" (click)="abrirModal(evento)">
+                    <span class="fw-bold w-100">  <i class="fas fa-pencil-alt text-warning me-3"></i> modificar</span>
+                 </button>
+                </li>
+                <li>
+                  <button class="fw-bold w-100 bg-light fs-min dropdown-item">
+                    <span class="fw-bold"><i class="far fa-eye-slash text-danger me-2"></i> Deshabilitar evento</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" [routerLink]="['asignarA/', evento.id]">
+                    <span class="fw-bold"> <i class="fas fa-link text-primary me-3"></i> Asignar actividades</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" [routerLink]="['actividades/', evento.id]">
+                    <span class="fw-bold"><i class="fas fa-stream text-success me-3"></i> Ver Actividades Asignadas</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <!-- <small class="ms-2 p-0">
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <!-- <button mat-menu-item (click)="abrirModalUpdate(evento.id)">
-                  <mat-icon class="text-warning">edit</mat-icon>
-                  <span class="fw-bold">Modificar</span>
-                </button> -->
-                <button mat-menu-item>
-                  <mat-icon class="text-warning">edit</mat-icon>
+                <button mat-menu-item data-bs-toggle="modal" data-bs-target="#modalId" (click)="abrirModal(evento)">
+                   <i class="fas fa-pencil-alt text-warning"></i>
                   <span class="fw-bold">modificar</span>
                 </button>
                 <button mat-menu-item>
                   <mat-icon class="text-danger">visibility_off</mat-icon>
                   <span class="fw-bold">baja evento</span>
                 </button>
-                <button mat-menu-item [routerLink]="['actividades/', evento.id]" routerLinkActive="active">
-                  <mat-icon class="text-primary">confirmation_number</mat-icon>
-                  <span class="fw-bold">Ver Actividades disponibles</span>
+                <button mat-menu-item [routerLink]="['asignarA/', evento.id]">
+                  <mat-icon class="text-primary">add_link</mat-icon>
+                  <span class="fw-bold">Asignar actividades</span>
+                </button>
+                <button mat-menu-item [routerLink]="['actividades/', evento.id]">
+                  <mat-icon class="text-success">confirmation_number</mat-icon>
+                  <span class="fw-bold">Ver Actividades Asignadas</span>
                 </button>
               </mat-menu>
-            </small>
+            </small> -->
           </div>
           <div class="toast-header fs-min p-0">
-            <img class="" [src]="evento.imagen | decodebase64 : 'png'" />
+            <img class="card-img-top" [src]="evento.imagen | decodebase64 : 'png'" />
           </div>
           <div class="toast-body fs-min">
             <span class="w-100">Desde: {{ evento.fechaDesde }}</span>
+            <br />
             <span class="w-100">Hasta: {{ evento.fechaHasta }}</span>
           </div>
         </div>
@@ -62,85 +84,88 @@
   </div>
 </div>
 
-<!-- Modal -->
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <div class="modal-header py-1 border-0">
-        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="exampleModalLabel" style="font-family: 'Montserrat';">Crear
-          nuevo evento</h5>
+        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="exampleModalLabel" style="font-family: 'Montserrat'">
+          Crear nuevo evento
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="formAltaEvento" (ngSubmit)="onSubmit()">
           <div class="row">
-            <div class="col-12">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">Debe completar este campo.</div>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                  id="nombre" formControlName="nombre" placeholder="" />
-                <label class="fw-bold fs-min" for="nombre">Nombre del Evento</label>
+            <div class="col-12 col-lg-6">
+              <div class="row">
+                <div class="col-12">
+                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">
+                    Debe completar este campo.
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
+                      id="nombre" formControlName="nombre" placeholder="" />
+                    <label class="fw-bold fs-min" for="nombre">Nombre del Evento</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('fechaDesde')?.errors?.['required']">
+                    Debe completar este campo.
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="date"
+                      class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
+                      formControlName="fechaDesde" id="fechaDesde" placeholder="" />
+                    <label class="fw-bold fs-min" for="fechaDesde">Inicio</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('fechaHasta')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="date"
+                      class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
+                      formControlName="fechaHasta" id="fechaHasta" placeholder="" />
+                    <label class="fw-bold fs-min" for="fechaHasta">Finalización</label>
+                  </div>
+                </div>
               </div>
-
             </div>
-            <div class="col-12 col-md-6">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('fechaDesde')?.errors?.['required']">Debe completar este campo.</div>
-              <div class="form-floating mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="row">
+                <div class="col-12 col-md-12">
+                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('imagen')?.errors?.['required']">
+                    Este campo es obligatorio.
+                  </div>
+                  <label for="file" [ngClass]="{
+                      inputCargado: archivoCargado,
+                      inputVacio: !archivoCargado
+                    }">
+                    <i [ngClass]="{'fs-alto mt-2 far fa-check-circle': archivoCargado, 'fas fs-alto mt-2 fa-cloud-upload-alt': !archivoCargado }"></i>
+                    <p class="fw-bold fs-min mt-2">
+                      {{ archivoCargado ? "Archivo Seleccionado" : "Seleccione la imagen que identifique al evento" }}
+                    </p>
+                  </label>
+                  <input class="input" name="text" id="file" type="file" accept="image/*" (change)="onFileChange($event, formAltaEvento)" formControlName="imagen"/>
+                </div>
 
 
-                <input type="date"
-                  class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                  formControlName="fechaDesde" id="fechaDesde" placeholder="" />
-                <label class="fw-bold fs-min" for="fechaDesde">Inicio</label>
+                <div class="col-12 text-center">
+                  <div *ngIf="previsualizacion" style="margin-top: 10px">
+                    <img class="imgPrevisualizacion" [src]="previsualizacion" alt="Vista previa" />
+                    <button class="btnReset" (click)="borrarImagen(formAltaEvento)" type="button">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
 
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('fechaHasta')?.errors?.['required']">
-                Este campo es obligatorio.</div>
-              <div class="form-floating mb-3">
-
-                <input type="date"
-                  class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                  formControlName="fechaHasta" id="fechaHasta" placeholder="" />
-                <label class="fw-bold fs-min" for="fechaHasta">Finalización</label>
-
-              </div>
-            </div>
-            <div class="col-12 col-md-12">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('imagen')?.errors?.['required']">
-                Este campo es obligatorio.</div>
-              <label for="file" [ngClass]="{'inputCargado': archivoCargado, 'inputVacio': !archivoCargado}">
-                <i
-                  [ngClass]="{'fs-alto mt-2 far fa-check-circle': archivoCargado, 'fas fs-alto mt-2 fa-cloud-upload-alt': !archivoCargado}"></i>
-                <p class="fw-bold fs-min mt-2"> {{ archivoCargado ? 'Archivo Seleccionado' : 'Seleccione la imagen que
-                  identifique al evento' }} </p>
-              </label>
-              <input class="input" name="text" id="file" type="file" accept="image/*"
-                (change)="onFileChange($event)" />
-            </div>
-            <div class="col-12 text-center">
-              <div *ngIf="previsualizacion" style="margin-top: 10px;">
-                <img class="imgPrevisualizacion" [src]="previsualizacion" alt="Vista previa" />
-                <button class="btnReset" (click)="resetFile()" type="button">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-
-              <input type="hidden" formControlName="imagen">
-            </div>
-
-
-
-            <div class="col-12 col-md-12 text-center">
-              <div class="form-check form-switch mt-3 d-flex justify-content-center">
-                <label class="form-check-label mt-1 me-5 fw-bold fs-min" for="activo" style="cursor: pointer;">Evento
-                  Activo</label>
-                <input class="form-check-input mt-2 me-5" type="checkbox" id="activo" formControlName="activo" checked>
+                  <input type="hidden" formControlName="imagen64" />
+                </div>
               </div>
             </div>
           </div>
@@ -150,64 +175,86 @@
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
           Cancelar
         </button>
-        <button type="button" class="btn btn-sm btn-success" [disabled]="formAltaEvento.invalid" (click)="onSubmit()">Guardar</button>
+        <button type="button" class="btn btn-sm btn-success" [disabled]="formAltaEvento.invalid" (click)="onSubmit()">
+          Guardar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="nuevaActividad" aria-hidden="true">
+<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="modal-header py-1 border-0">
-        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="nuevaActividad" style="font-family: 'Montserrat';">Crear
-          nueva actividad</h5>
+        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="exampleModalLabel" style="font-family: 'Montserrat'">
+          Modificar el evento
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="formAltaEvento" (ngSubmit)="onSubmit()">
+        <form [formGroup]="formModiEvento" (ngSubmit)="onSubmitModificacion()">
           <div class="row">
+            <input type="hidden" formControlName="id">
             <div class="col-12">
               <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">Debe completar este campo.</div>
+                *ngIf="formModiEvento.get('nombre')?.errors?.['required']">
+                Debe completar este campo.
+              </div>
               <div class="form-floating mb-3">
-                <input type="text"
-                  class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold fs-min-"
-                  id="descripcion" formControlName="descripcion" placeholder="" />
-                <label class="fw-bold fs-min" for="descripcion">Descripcion Actividad</label>
+                <input type="text" class="form-control" id="ModiNombre" formControlName="nombre"/>
+                <label for="Modinombre" class="form-label">Nombre del Evento</label>
               </div>
             </div>
-
-            <div class="col-12">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">Debe completar este campo.</div>
-              <div class="form-floating mb-3">
-                <input type="text"
-                  class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold fs-min-" id="Detalle"
-                  formControlName="Detalle" placeholder="" />
-                <label class="fw-bold fs-min" for="descripcion">Detalle</label>
-              </div>
-            </div>
-
             <div class="col-12 col-md-6">
               <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formAltaEvento.get('fechaDesde')?.errors?.['required']">Debe completar este campo.</div>
+                *ngIf="formModiEvento.get('fechaDesde')?.errors?.['required']">
+                Debe completar este campo.
+              </div>
               <div class="form-floating mb-3">
-
-                <input type="number"
-                  class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                  formControlName="ImporteSujerido" id="fechaDesde" placeholder="" />
-                <label class="fw-bold fs-min" for="fechaDesde">Importe Sujerido</label>
-
+                <input type="date" class="form-control" id="ModifechaDesde" formControlName="fechaDesde"
+                   />
+                <label for="ModifechaDesde" class="form-label">Fecha Desde</label>
               </div>
             </div>
-            <div class="col-12 col-md-6 text-center">
-              <div class="form-check form-switch mt-3 d-flex justify-content-center mt-5">
-                <label class="form-check-label mt-1 me-5 fw-bold fs-min" for="activo" style="cursor: pointer;">Actividad
-                  Disponible</label>
-                <input class="form-check-input mt-2 me-5 shadow" type="checkbox" id="activo" checked
-                  style="cursor: pointer;">
+            <div class="col-12 col-md-6">
+              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('fechaHasta')?.errors?.['required']">
+                Este campo es obligatorio.
               </div>
+              <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="ModifechaHasta" formControlName="fechaHasta"
+                  />
+                <label for="ModifechaHasta" class="form-label">Fecha Hasta</label>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-12">
+              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('imagen')?.errors?.['required']">
+                Este campo es obligatorio.
+              </div>
+              <label for="file" [ngClass]="{
+                  inputCargado: archivoCargado,
+                  inputVacio: !archivoCargado
+                }">
+                <i [ngClass]="{'fs-alto mt-2 far fa-check-circle': archivoCargado, 'fas fs-alto mt-2 fa-cloud-upload-alt': !archivoCargado }"></i>
+                <p class="fw-bold fs-min mt-2">
+                  {{ archivoCargado ? "Archivo Seleccionado" : "Seleccione la imagen que identifique al evento" }}
+                </p>
+              </label>
+              <input class="input" name="text" id="file" type="file" accept="image/*" (change)="onFileChange($event, formModiEvento)" />
+            </div>
+            <div class="col-12 text-center">
+              <div *ngIf="previsualizacion" style="margin-top: 10px">
+                <img class="imgPrevisualizacion" [src]="previsualizacion" alt="Vista previa" />
+                <button class="btnReset" (click)="borrarImagen(formModiEvento)" type="button">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+
+              <input type="hidden" formControlName="imagen" />
             </div>
           </div>
         </form>
@@ -216,8 +263,36 @@
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
           Cancelar
         </button>
-        <button type="button" class="btn btn-sm btn-success" [disabled]="formAltaEvento.invalid">Guardar</button>
+        <button type="button" class="btn btn-sm btn-success" [disabled]="formModiEvento.invalid" (click)="onSubmitModificacion()">
+          Guardar
+        </button>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+
+<!-- <div class="col-12 col-md-12">
+              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('imagen')?.errors?.['required']">
+                Este campo es obligatorio.
+              </div>
+            </div>
+            <div class="col-12 text-center">
+                <img class="imgPrevisualizacion" [src]="eventoSeleccionado.imagen | decodebase64 : 'png'" alt="Vista previa" />
+                <button class="btnReset" (click)="borrarImagen(formModiEvento)" type="button">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              <input type="hidden" formControlName="imagen
+            </div> -->
+
+
+   <!-- <div class="col-12 col-md-12 text-center">
+              <div class="form-check form-switch mt-3 d-flex justify-content-center">
+                <label class="form-check-label mt-1 me-5 fw-bold fs-min" for="Modiactivo" style="cursor: pointer">Evento
+                  Activo</label>
+                <input class="form-check-input mt-2 me-5" type="checkbox" id="Modiactivo" formControlName="activo"
+                  checked />
+              </div>
+            </div> -->
+

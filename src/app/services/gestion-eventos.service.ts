@@ -16,16 +16,11 @@ export class EventosDisplayService {
     const username = this.tokenData.getUsername();
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
-
-    // Aquí podrías hacer algo con el username y accessToken
-    // console.log('Username desde UserService:', username);
-    // console.log('Access Token desde UserService:', accessToken);
-    // console.log('TokenType:', tokenType);
-
     return { username, accessToken, tokenType }; // Devuelve la información si es necesario
   }
 
-  private apiUrl = 'http://192.168.0.248:8000/api/eventos';
+  // private apiUrl = 'http://192.168.0.248:8000/api/eventos';
+  private apiUrl = 'http://192.168.0.77:8000/api/eventos';
 
   altaEvento(data: any): Observable<any> {
     // Obtienes el token y el tipo de token desde AuthTokenService
@@ -39,12 +34,56 @@ export class EventosDisplayService {
 
     // Crea las cabeceras de la solicitud
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
     // Realiza la petición POST
     return this.Http.post<any>(`${this.apiUrl}/`, data, { headers });
+  }
+
+  modificarEvento(data: any): Observable<any> {
+    // Obtienes el token y el tipo de token desde AuthTokenService
+    const accessToken = this.tokenData.getAccessToken();
+    const tokenType = this.tokenData.getTokenType();
+
+    // Verifica que ambos valores existan
+    if (!accessToken || !tokenType) {
+      throw new Error("No se pudo obtener los valores del token.");
+    }
+
+    // Crea las cabeceras de la solicitud
+    const headers = new HttpHeaders({
+      // 'Content-Type': 'multipart/form-data',
+      Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
+    });
+
+    const id = data.id
+    console.log({data});
+    // Realiza la petición POST
+    return this.Http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
+  }
+
+  asignarActividades(data: any): Observable<any>{
+    const accessToken = this.tokenData.getAccessToken();
+    const tokenType = this.tokenData.getTokenType();
+
+     // Verifica que ambos valores existan
+     if (!accessToken || !tokenType) {
+      throw new Error("No se pudo obtener los valores del token.");
+    }
+
+    // Crea las cabeceras de la solicitud
+    const headers = new HttpHeaders({
+      // 'Content-Type': 'multipart/form-data',
+      Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
+    });
+
+    const id = data.id
+    console.log({data});
+
+    return this.Http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
   }
 
   // altaEvento(data: any): Observable<any> {

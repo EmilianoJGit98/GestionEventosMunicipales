@@ -16,10 +16,12 @@ import { EventosDisplayService } from '../../services/gestion-eventos.service';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
+  NgModel,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-eventos',
@@ -32,18 +34,27 @@ import {
     RouterModule,
     Decodebase64Pipe,
     ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './eventos.component.html',
   styleUrl: './eventos.component.css',
 })
 export class EventosComponent {
   formAltaEvento: FormGroup;
+  formModiEvento: FormGroup;
+  eventoSeleccionado: EventoInterface = <EventoInterface>{};
+  evento: any = '';
+  // formModiEvento: FormGroup;
+
+  // eventoSeleccionado: EventoInterface;
+
   eventos: EventoInterface[] = [];
   archivoCargado: boolean = false;
   previsualizacion: string | ArrayBuffer | null = null;
 
   iconEmpty = '<i class="fas fas fa-cloud-upload-alt fs-alto mt-2"></i>';
   iconNoEmpty = '<i class="fas fas fa-check-circle fs-alto mt-2"></i>';
+  mostrarComponente: boolean = true;
 
   constructor(
     private servEventos: EventosMunicipalesService,
@@ -54,10 +65,20 @@ export class EventosComponent {
       nombre: ['', [Validators.required]],
       fechaDesde: ['', [Validators.required]],
       fechaHasta: ['', [Validators.required]],
+      imagen64: ['', [Validators.required]],
       imagen: ['', [Validators.required]],
-      activo: ['true']
+    });
+
+    this.formModiEvento = this.BuildForm.group({
+      id: ['', [Validators.required]],
+      nombre: ['', [Validators.required]],
+      fechaDesde: ['', [Validators.required]],
+      fechaHasta: ['', [Validators.required]],
+      imagen: ['', [Validators.required]],
+      // activo: [true]
     });
   }
+
 
   ngOnInit() {
     this.cargarEventos();
@@ -68,7 +89,7 @@ export class EventosComponent {
     this.servEventos.getEventos().subscribe(
       (data: EventoInterface[]) => {
         this.eventos = data;
-        console.log(this.eventos); // Para verificar que se están recibiendo los eventos
+        //console.log(this.eventos); // Para verificar que se están recibiendo los eventos
       },
       (error) => {
         console.error('Error al cargar eventos:', error); // Manejo de errores
@@ -76,21 +97,42 @@ export class EventosComponent {
     );
   }
 
-  onFileChange(event: any) {
+  abrirModal(evento: EventoInterface): void {
+    this.eventoSeleccionado = { ...evento }; // Clonamos el evento seleccionado
+
+    console.log(this.eventoSeleccionado);
+
+    this.formModiEvento = this.BuildForm.group({
+      id: [this.eventoSeleccionado?.id || '', Validators.required],
+      nombre: [this.eventoSeleccionado?.nombre || '', Validators.required],
+      fechaDesde: [
+        this.eventoSeleccionado?.fechaDesde || '',
+        Validators.required,
+      ],
+      fechaHasta: [
+        this.eventoSeleccionado?.fechaHasta || '',
+        Validators.required,
+      ],
+      imagen: [this.eventoSeleccionado?.imagen || '', Validators.required],
+      // activo: [this.eventoSeleccionado?.activo || true]
+    });
+
+    if (this.eventoSeleccionado.imagen) {
+      this.previsualizacion = this.eventoSeleccionado.imagen; // Cambia 'image/jpeg' si es necesario
+      this.archivoCargado = true; // Indica que la imagen está cargada
+    }
+  }
+
+
+  onFileChange(event: any, form: FormGroup) {
     const file = event.target.files[0];
     if (file) {
       this.archivoCargado = true;
-      const fileName = file.name;
-      const filePath = file.webkitRelativePath || file.name; // Para obtener la ruta (nombre del archivo), ya que el navegador no te da el path
-      //console.log('Nombre del archivo:', fileName);
-      //console.log('Ruta del archivo:', filePath);
-
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const base64String = e.target.result; // Esto es el base64
-        this.previsualizacion = e.target.result;
-        this.formAltaEvento.get('imagen')?.setValue(base64String);
-        //console.log('Base64:', base64String);
+        this.previsualizacion = base64String;
+        form.get('imagen64')?.setValue(base64String); // Usar el formulario pasado como argumento
       };
       reader.readAsDataURL(file); // Leer el archivo y convertirlo a Base64
     }
@@ -106,7 +148,19 @@ export class EventosComponent {
     }
   }
 
+  borrarImagen(form: FormGroup) {
+    form.get('imagen')?.setValue(''); // Limpia el campo del input
+    this.archivoCargado = false; // Cambia el estado a falso
+    this.previsualizacion = null; // Resetea la vista previa
+    const fileInput: any = document.getElementById('file'); // Obtiene el elemento del input
+    if (fileInput) {
+      fileInput.value = ''; // Limpia el valor del input de archivo
+    }
+  }
+
   onSubmit() {
+    // console.log(this.formAltaEvento.value)
+
     if (this.formAltaEvento.valid) {
       if (this.formAltaEvento.valid) {
         const formData = this.formAltaEvento.value;
@@ -115,22 +169,67 @@ export class EventosComponent {
           next: (res: any) => {
             // this.participanteId = res.participante;
             // this.createCheckoutButton(res.id);
-            console.log("next")
+            console.log(res);
           },
           complete: () => {
-            console.log("complete")
-            // this.cargando = false;
+            Swal.fire({
+              icon: 'success',
+              text: 'Evento cargado correctamente',
+              confirmButtonText: 'finalizar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                location.reload();
+              }
+            });
           },
           error: (error: any) => {
-            // this.router.navigate(['/pago-rechazado/' + this.IDevento]);
-            // this.router.navigate(['/rechazado']);
-            console.log("error")
-            // this.cargando = false;
+            console.log('error');
           },
         });
-        } else {
+      } else {
         console.log('El formulario no es válido');
-        }
+      }
     }
   }
+
+  onSubmitModificacion() {
+    if (this.formModiEvento.valid) {
+      if (this.formModiEvento.valid) {
+        const formData = this.formModiEvento.value;
+
+        this.gestionEventos
+          .modificarEvento(this.formModiEvento.value)
+          .subscribe({
+            next: (res: any) => {
+              // this.participanteId = res.participante;
+              // this.createCheckoutButton(res.id);
+              console.log(res);
+            },
+            complete: () => {
+              Swal.fire({
+                icon: 'success',
+                text: 'Evento modificado correctamente',
+                confirmButtonText: 'finalizar',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            },
+            error: (error: any) => {
+              console.log('error');
+            },
+          });
+      } else {
+        console.log('El formulario no es válido');
+      }
+    }
+  }
+
+  // recargarComponente() {
+  //   this.mostrarComponente = false; // Ocultar el componente
+  //   setTimeout(() => {
+  //     this.mostrarComponente = true; // Mostrar el componente después de un ciclo
+  //   }, 0);
+  // }
 }

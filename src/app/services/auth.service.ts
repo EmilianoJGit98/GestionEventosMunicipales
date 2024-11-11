@@ -18,11 +18,6 @@ export class AuthService {
     };
 
     const body = new URLSearchParams();
-    // for (const key in loginObj) {
-    //   if (loginObj.hasOwnProperty(key) && loginObj[key] !== undefined) {
-    //     body.append(key, loginObj[key]);
-    //   }
-    // }
 
     Object.entries(loginObj).forEach(([key, value]) => {
       if (value !== undefined) {
@@ -30,7 +25,7 @@ export class AuthService {
       }
     });
 
-    return this.http.post('http://192.168.0.248:8000/api/auth', body.toString(), {
+    return this.http.post('http://192.168.0.77:8000/api/auth', body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
   }

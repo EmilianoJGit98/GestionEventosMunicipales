@@ -27,9 +27,10 @@ export class DashboardComponent {
   }
 
   loadUserData() {
-    this.username = this.authService.getUsername();
-    this.accessToken = this.authService.getAccessToken();
-    this.tokenType = this.authService.getTokenType();
+
+    // this.username = this.authService.getUsername();
+    // this.accessToken = this.authService.getAccessToken();
+    // // this.tokenType = this.authService.getTokenType();
   }
 
 
