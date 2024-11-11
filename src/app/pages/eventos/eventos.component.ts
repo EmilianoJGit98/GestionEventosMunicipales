@@ -42,6 +42,7 @@ import Swal from 'sweetalert2';
 export class EventosComponent {
   formAltaEvento: FormGroup;
   formModiEvento: FormGroup;
+  formBajaEvento: FormGroup;
   eventoSeleccionado: EventoInterface = <EventoInterface>{};
   evento: any = '';
   // formModiEvento: FormGroup;
@@ -77,12 +78,16 @@ export class EventosComponent {
       imagen: ['', [Validators.required]],
       // activo: [true]
     });
+
+    this.formBajaEvento = this.BuildForm.group({
+      idEvento: ['', [Validators.required]],
+      Nombre: ['', [Validators.required]],
+    })
   }
 
 
   ngOnInit() {
     this.cargarEventos();
-    // this.eventos = this.getListEventos.ListarEventos();
   }
 
   cargarEventos(): void {
@@ -100,7 +105,7 @@ export class EventosComponent {
   abrirModal(evento: EventoInterface): void {
     this.eventoSeleccionado = { ...evento }; // Clonamos el evento seleccionado
 
-    console.log(this.eventoSeleccionado);
+    // console.log(this.eventoSeleccionado);
 
     this.formModiEvento = this.BuildForm.group({
       id: [this.eventoSeleccionado?.id || '', Validators.required],
@@ -123,6 +128,14 @@ export class EventosComponent {
     }
   }
 
+  bajaEventoModal(evento: EventoInterface): void{
+    this.eventoSeleccionado = { ...evento };
+
+    this.formBajaEvento = this.BuildForm.group({
+      idEvento: [this.eventoSeleccionado?.id || '', Validators.required],
+      Nombre: [this.eventoSeleccionado?.nombre || '', Validators.required],
+    })
+  }
 
   onFileChange(event: any, form: FormGroup) {
     const file = event.target.files[0];
@@ -167,9 +180,7 @@ export class EventosComponent {
 
         this.gestionEventos.altaEvento(this.formAltaEvento.value).subscribe({
           next: (res: any) => {
-            // this.participanteId = res.participante;
-            // this.createCheckoutButton(res.id);
-            console.log(res);
+            // console.log(res);
           },
           complete: () => {
             Swal.fire({
@@ -198,11 +209,9 @@ export class EventosComponent {
         const formData = this.formModiEvento.value;
 
         this.gestionEventos
-          .modificarEvento(this.formModiEvento.value)
+          .bajaEvento(this.formModiEvento.value)
           .subscribe({
             next: (res: any) => {
-              // this.participanteId = res.participante;
-              // this.createCheckoutButton(res.id);
               console.log(res);
             },
             complete: () => {
@@ -226,10 +235,33 @@ export class EventosComponent {
     }
   }
 
-  // recargarComponente() {
-  //   this.mostrarComponente = false; // Ocultar el componente
-  //   setTimeout(() => {
-  //     this.mostrarComponente = true; // Mostrar el componente después de un ciclo
-  //   }, 0);
-  // }
-}
+  onSubmitBajaEvento(){
+    if (this.formBajaEvento.valid) {
+      const formData = this.formBajaEvento.value;
+
+      this.gestionEventos
+          .bajaEvento(this.formBajaEvento.value)
+          .subscribe({
+            next: (res: any) => {
+              console.log(res);
+            },
+            complete: () => {
+              Swal.fire({
+                icon: 'success',
+                text: 'Evento deshabilitado correctamente',
+                confirmButtonText: 'finalizar',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            },
+            error: (error: any) => {
+              console.log('error');
+            },
+          });
+      } else {
+        console.log('El formulario no es válido');
+      }
+    }
+  }

@@ -65,6 +65,27 @@ export class EventosDisplayService {
     return this.Http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
   }
 
+  bajaEvento(data: any): Observable<any> {
+    // Obtienes el token y el tipo de token desde AuthTokenService
+    const accessToken = this.tokenData.getAccessToken();
+    const tokenType = this.tokenData.getTokenType();
+
+    // Verifica que ambos valores existan
+    if (!accessToken || !tokenType) {
+      throw new Error("No se pudo obtener los valores del token.");
+    }
+
+    // Crea las cabeceras de la solicitud
+    const headers = new HttpHeaders({
+      // 'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
+      Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
+    });
+
+    // Realiza la petición POST
+    return this.Http.post<any>(`${this.apiUrl}/`, data, { headers });
+  }
+
   asignarActividades(data: any): Observable<any>{
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
