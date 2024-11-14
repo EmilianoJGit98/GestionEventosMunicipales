@@ -20,12 +20,17 @@ export class EventosDisplayService {
   }
 
   // private apiUrl = 'http://192.168.0.248:8000/api/eventos';
-  private apiUrl = 'http://192.168.0.77:8000/api/eventos';
+  // private apiUrl = 'http://192.168.0.77:8000/api/eventos';
+  private apiUrl = 'http://192.168.200.113:8002/api/eventos';
 
   altaEvento(data: any): Observable<any> {
     // Obtienes el token y el tipo de token desde AuthTokenService
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
+
+    data.forEach((value: any, key: string) => {
+      console.log(`Key: ${key}, Value:`, value);
+    });
 
     // Verifica que ambos valores existan
     if (!accessToken || !tokenType) {
@@ -35,7 +40,7 @@ export class EventosDisplayService {
     // Crea las cabeceras de la solicitud
     const headers = new HttpHeaders({
       // 'Content-Type': 'application/json',
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
@@ -45,6 +50,7 @@ export class EventosDisplayService {
 
   modificarEvento(data: any): Observable<any> {
     // Obtienes el token y el tipo de token desde AuthTokenService
+
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
 
@@ -53,19 +59,23 @@ export class EventosDisplayService {
       throw new Error("No se pudo obtener los valores del token.");
     }
 
-    // Crea las cabeceras de la solicitud
     const headers = new HttpHeaders({
-      // 'Content-Type': 'multipart/form-data',
+      //'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'application/json',
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
-    const id = data.id
-    console.log({data});
+    data.forEach((value: any, key: string) => {
+      console.log(`Key: ${key}, Value:`, value);
+    });
+
+    const id = data.get('id');
+    // const id = data.id
     // Realiza la petición POST
     return this.Http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
   }
 
-  bajaEvento(data: any): Observable<any> {
+  cambioEstadoEvento(data: any): Observable<any> {
     // Obtienes el token y el tipo de token desde AuthTokenService
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
@@ -78,12 +88,14 @@ export class EventosDisplayService {
     // Crea las cabeceras de la solicitud
     const headers = new HttpHeaders({
       // 'Content-Type': 'application/json',
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
+    const id = data.idEvento
+    console.log(data);
     // Realiza la petición POST
-    return this.Http.post<any>(`${this.apiUrl}/`, data, { headers });
+    return this.Http.put<any>(`${this.apiUrl}/estado/${id}`, data, { headers });
   }
 
   asignarActividades(data: any): Observable<any>{

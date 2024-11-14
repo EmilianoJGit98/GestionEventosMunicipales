@@ -4,5 +4,5 @@ export interface EventoInterface {
   imagen?: string;
   fechaDesde?: string;
   fechaHasta?: string;
-  activo?: boolean;
+  activo?: string;
 }

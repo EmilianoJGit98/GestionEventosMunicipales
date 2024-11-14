@@ -33,7 +33,6 @@ img {
   padding: 5px;
   color: #404040;
   cursor: pointer;
-  /* background-image: linear-gradient(to right, #eaeaea, #c9c9c9, #a9a9a9, #909090); */
   box-shadow:0 0.125rem 0.25rem #00000038;
 }
 
@@ -63,7 +62,6 @@ img {
   padding: 5px;
   color: #0a6523;
   cursor: pointer;
-  /* background-image: linear-gradient(to right, #eaeaea, #c9c9c9, #a9a9a9, #909090); */
   box-shadow: 0 4px 15px 0 #a9a9a9;
 }
 
@@ -94,7 +92,7 @@ input[type="file"] {
 }
 
 .imgPrevisualizacion{
-  width: 40%;
+  width: 25%;
   height: auto;
   border: 1px solid #ccc;
   margin-top: 10px;

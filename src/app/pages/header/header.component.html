@@ -31,13 +31,13 @@
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
       <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active px-2" routerLink='eventos' routerLinkActive="router-link-active"
-            routerLinkActive="active" aria-current="page">Eventos
+        <li class="nav-item me-2">
+          <a class="nav-link px-3 fw-bold active px-2" routerLink='eventos' routerLinkActive="router-link-active"
+            routerLinkActive="active" aria-current="page"><i class="fas fa-calendar"></i> Eventos
             <span class="visually-hidden">(current)</span></a>
         </li>
-        <li class="nav-item d-flex justify-content-center">
-          <button class="nav-link w-100 fs-min fw-bold logout text-danger px-2 rounded" aria-current="page" (click)="cerrarSesion()">
+        <li class="nav-item me-2 d-flex justify-content-center">
+          <button class="nav-link px-3 fw-bold w-100 fs-min fw-bold logout text-danger px-2 rounded" aria-current="page" (click)="cerrarSesion()">
             <i class="fas fa-power-off me-2"></i>
             Cerrar Sesión
           </button>

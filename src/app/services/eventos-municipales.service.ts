@@ -12,14 +12,21 @@ import { SubRubroInterface } from '../Models/subrurbros.model';
 })
 export class EventosMunicipalesService {
   // private apiUrl = 'http://192.168.0.248:8000/api/eventos';
-  private apiUrl = 'http://192.168.0.77:8000/api/eventos';
+  // private apiUrl = 'http://192.168.0.77:8000/api/eventos';
+  private apiUrl = 'http://192.168.200.113:8002/api/eventos';
 
   idRubro: number = 0;
+  activo: number = 0;
 
   constructor(private http: HttpClient) { }
 
-  getEventos(): Observable<EventoInterface[]> {
-    return this.http.get<EventoInterface[]>(this.apiUrl);
+  // getEventos(): Observable<EventoInterface[]> {
+  //   return this.http.get<EventoInterface[]>(this.apiUrl);
+  // }
+
+  getEventos(estado: number): Observable<EventoInterface[]> {
+    this.activo = estado;
+    return this.http.get<EventoInterface[]>(this.apiUrl+'?activo='+this.activo);
   }
 
   getRubros(): Observable<RubroInterface[]>{
