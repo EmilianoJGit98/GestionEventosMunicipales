@@ -33,9 +33,6 @@ export class AuthTokenService {
     return this.http.post('http://192.168.200.113:8002/api/auth', body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
-    // return this.http.post('http://192.168.0.77:8000/api/auth', body.toString(), {
-    //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    // });
   }
 
   logout() {

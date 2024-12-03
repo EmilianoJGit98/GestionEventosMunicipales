@@ -8,6 +8,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
 import { authGuardGuard } from './guard/auth-guard.guard';
 import { AsignarActividadesComponent } from './pages/asignar-actividades/asignar-actividades.component';
+import { ActividadesAsignadasComponent } from './pages/actividades-asignadas/actividades-asignadas.component';
 
 
 
@@ -39,7 +40,6 @@ export const routes: Routes = [
         path: 'eventos/asignarA/:id',
         component: AsignarActividadesComponent,
       },
-
       {
         path: 'eventos/asignarA/:id',
         component: AsignarActividadesComponent,
@@ -47,6 +47,10 @@ export const routes: Routes = [
       {
         path: 'eventos/actividades/:idEvento/:idRubro',
         component: ActividadesComponent,
+      },
+      {
+        path: 'eventos/actividades-asignadas/:idEvento',
+        component: ActividadesAsignadasComponent,
       },
     ],
   },

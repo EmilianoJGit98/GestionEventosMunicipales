@@ -56,13 +56,15 @@ export class EventosComponent {
   archivoCargadoAlta: boolean = false;
   archivoCargadoModi: boolean = false;
   previsualizacion: string | null = null;
+  deshabilitados: number = 1;
+  msjVista: string = 'Ver eventos inactivos';
 
   previsualizacionAlta: string | null = null;
   previsualizacionModi: string | null = null;
 
-  iconEmpty = '<i class="fas fas fa-cloud-upload-alt fs-alto mt-2"></i>';
-  iconNoEmpty = '<i class="fas fas fa-check-circle fs-alto mt-2"></i>';
+  iconEmpty: string = 'visibility';
   mostrarComponente: boolean = true;
+  submitOK = false;
 
   constructor(
     private servEventos: EventosMunicipalesService,
@@ -95,11 +97,39 @@ export class EventosComponent {
   }
 
   ngOnInit() {
-    this.cargarEventos();
+    // Recuperar el estado guardado desde localStorage al iniciar la aplicación
+    const estadoGuardado = localStorage.getItem('deshabilitados');
+    this.deshabilitados = estadoGuardado !== null ? Number(estadoGuardado) : 0;
+
+    this.msjVista = this.deshabilitados === 1 ? 'Ver eventos inactivos' : 'Ver eventos activos';
+    this.iconEmpty = this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
+
+
+    // this.mostrarInactivos();
+
+    this.cargarEventos(this.deshabilitados); // Carga inicialmente los eventos
   }
 
-  cargarEventos(): void {
-    this.servEventos.getEventos(1).subscribe(
+  mostrarInactivos(): void {
+    // Cambia el estado de deshabilitados
+    this.deshabilitados = this.deshabilitados === 1 ? 0 : 1;
+
+    // Actualiza el mensaje de vista
+    this.msjVista = this.deshabilitados === 1 ? 'Ver eventos inactivos' : 'Ver eventos activos';
+    this.iconEmpty = this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
+
+
+    // Guardar el estado en localStorage
+    localStorage.setItem('deshabilitados', String(this.deshabilitados));
+
+    // Cargar los eventos según el nuevo estado
+    this.cargarEventos(this.deshabilitados);
+  }
+
+  cargarEventos(deshabiliados: number): void {
+    let estadoVista = deshabiliados;
+
+    this.servEventos.getEventos(estadoVista).subscribe(
       (data: EventoInterface[]) => {
         this.eventos = data;
         // console.log(this.eventos); // Para verificar que se están recibiendo los eventos
@@ -112,8 +142,6 @@ export class EventosComponent {
 
   abrirModal(evento: EventoInterface): void {
     this.eventoSeleccionado = { ...evento }; // Clonamos el evento seleccionado
-
-    // console.log(this.eventoSeleccionado.id)
 
     this.formModiEvento = this.BuildForm.group({
       id: [this.eventoSeleccionado?.id || '', Validators.required],
@@ -135,7 +163,7 @@ export class EventosComponent {
 
     const varActivo = this.eventoSeleccionado.activo ? 1 : '0';
 
-    console.log(varActivo)
+    // console.log(varActivo)
 
     this.formBajaEvento = this.BuildForm.group({
       idEvento: [this.eventoSeleccionado?.id || '', Validators.required],
@@ -202,6 +230,25 @@ export class EventosComponent {
 
     if (this.formAltaEvento.valid) {
       if (this.formAltaEvento.valid) {
+        let timerInterval;
+        Swal.fire({
+          // title: 'Creando evento!',
+          html: 'Creando evento, por favor espere un momento',
+          timer: 2000,
+          timerProgressBar: true,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          willClose: () => {},
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer');
+          }
+        });
+
+        this.submitOK = true;
         // const formData = this.formAltaEvento.value;
         const formData = new FormData();
 
@@ -224,8 +271,10 @@ export class EventosComponent {
         if (fileInput.files && fileInput.files.length > 0) {
           formData.append('imagen', fileInput.files[0]); // Agregar el archivo de imagen
         } else {
-          console.log('No se ha seleccionado ninguna imagen');
-          this.formAltaEvento.invalid;
+          // console.log('No se ha seleccionado ninguna imagen');
+          // this.formAltaEvento.invalid;
+          this.submitOK = false;
+          return;
         }
 
         this.gestionEventos.altaEvento(formData).subscribe({
@@ -244,44 +293,16 @@ export class EventosComponent {
             });
           },
           error: (error: any) => {
-            console.log('error');
+            // console.log('error');
+            this.submitOK = false;
           },
         });
       } else {
-        console.log('El formulario no es válido');
+        // console.log('El formulario no es válido');
       }
     }
   }
 
-  // onSubmitModificacion() {
-  //   if (this.formModiEvento.valid) {
-  //     if (this.formModiEvento.valid) {
-  //       const formData = this.formModiEvento.value;
-
-  //       this.gestionEventos.modificarEvento(this.formModiEvento.value).subscribe({
-  //         next: (res: any) => {
-  //           console.log(res);
-  //         },
-  //         complete: () => {
-  //           Swal.fire({
-  //             icon: 'success',
-  //             text: 'Evento modificado correctamente',
-  //             confirmButtonText: 'finalizar',
-  //           }).then((result) => {
-  //             if (result.isConfirmed) {
-  //               location.reload();
-  //             }
-  //           });
-  //         },
-  //         error: (error: any) => {
-  //           console.log('error');
-  //         },
-  //       });
-  //     } else {
-  //       console.log('El formulario no es válido');
-  //     }
-  //   }
-  // }
   onSubmitModificacion() {
     if (this.formModiEvento.valid) {
       if (this.formModiEvento.valid) {
@@ -313,13 +334,13 @@ export class EventosComponent {
           formData.append('imagen', '');
         }
 
-         formData.forEach((value, key) => {
-          console.log(`${key}:`, value);
+        formData.forEach((value, key) => {
+          // console.log(`${key}:`, value);
         });
 
         this.gestionEventos.modificarEvento(formData).subscribe({
           next: (res: any) => {
-            console.log(res);
+            // console.log(res);
           },
           complete: () => {
             Swal.fire({
@@ -333,7 +354,7 @@ export class EventosComponent {
             });
           },
           error: (error: any) => {
-            console.log('error', error);
+            // console.log('error', error);
           },
         });
       } else {
@@ -346,11 +367,11 @@ export class EventosComponent {
     if (this.formBajaEvento.valid) {
       const formData = this.formBajaEvento.value;
 
-      console.log(formData)
+      // console.log(formData)
 
       this.gestionEventos.cambioEstadoEvento(formData).subscribe({
         next: (res: any) => {
-          console.log(res);
+          // console.log(res);
         },
         complete: () => {
           Swal.fire({

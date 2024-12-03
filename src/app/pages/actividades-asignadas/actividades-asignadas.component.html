@@ -1,0 +1,106 @@
+<div class="container-fluid">
+  <h5 class="fs-med fw-bold family-montserrat">
+    Actividades Asignadas al Evento
+  </h5>
+  <hr />
+
+
+  <!-- <div class="row p-2 ">
+    <div class="col-12 col-md-4 p-0">
+      <div class="d-flex justify-content-center">
+        <mat-form-field class="w-100">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un registro">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-12 p-0 show-responsive d-none" *ngFor="let act of arrayActividadesAsignadas">
+      <div class="alert border shadow py-3 px-3" role="alert">
+        <h4 class="alert-heading fs-med py-0">{{ act.idSubRubro }}. {{act.Descripcion}} </h4>
+      </div>
+    </div>
+  </div> -->
+
+  <div *ngIf="arrayActividadesAsignadas.length > 0">
+    <div class="alert alert-danger py-2 shadow" role="alert">
+      Seleccione las actividades correspondientes para eliminarlas del evento
+      <strong></strong>
+    </div>
+    <div class="row p-2">
+      <div class="col-12 col-md-4 p-0">
+        <div class="d-flex justify-content-center">
+          <mat-form-field class="w-100 me-2 p-0">
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un registro" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 p-0">
+        <button class="btn btn-danger fw-bold px-5 py-3" (click)="submitForm()">
+          Eliminar Selección <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <div class="col-12 p-0 show-responsive d-none" *ngFor="let act of arrayActividadesAsignadas">
+        <div class="alert border shadow py-3 px-3" role="alert">
+          <h4 class="alert-heading fs-med py-0">
+            {{ act.idSubRubro }}. {{ act.Descripcion }}
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="dataSourceActs" class="mat-elevation-z8"
+      class="shadow border tbafiliados hidden-desktop">
+      <ng-container matColumnDef="idSubRubro">
+        <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+          idSubRubro
+        </th>
+        <td mat-cell *matCellDef="let element" class="py-0 text-center border-bottom fs-min">
+          {{ element.idSubRubro }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Importe">
+        <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+          importe
+        </th>
+        <td mat-cell *matCellDef="let element" class="py-0 text-center border-bottom fs-min">
+          {{ element.importe | currency:'':'symbol':'1.2-2'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Descripcion">
+        <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+          Descripcion
+        </th>
+        <td mat-cell *matCellDef="let element" class="py-0 text-left border-bottom fs-min-">
+          {{ element.descripcion }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Seleccionar">
+        <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+          Seleccionar
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center border-bottom">
+          <div class="form-check form-switch d-flex text-center">
+            <input class="form-check-input" type="checkbox" [id]="'checkbox-' + element.idSubRubro"
+              [value]="element.idSubRubro" [checked]="acumulador(element.idSubRubro)"
+              (change)="seleccionActividades($event, element.idSubRubro)" />
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsActs" class="fw-bold"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsActs" class="fw-bold"></tr>
+    </table>
+
+    <mat-paginator class="shadow hidden-desktop" [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
+
+  <div *ngIf="arrayActividadesAsignadas.length === 0" class="alert alert-warning shadow" role="alert">
+    No se encontraron actividades asignadas para este evento.
+  </div>
+
+</div>
+

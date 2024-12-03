@@ -1,9 +1,10 @@
 import { EventoInterface } from './../Models/eventos.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { RubroInterface } from '../Models/rubros.model';
 import { SubRubroInterface } from '../Models/subrurbros.model';
+import { ActividadAsignadaInterface } from '../Models/actividad-asignada.model';
 
 
 
@@ -17,6 +18,7 @@ export class EventosMunicipalesService {
 
   idRubro: number = 0;
   activo: number = 0;
+  idEvento: number = 0;
 
   constructor(private http: HttpClient) { }
 
@@ -33,8 +35,33 @@ export class EventosMunicipalesService {
     return this.http.get<RubroInterface[]>(this.apiUrl+'/rubros')
   }
 
-  getSubRubros(idRubro: number): Observable<SubRubroInterface[]>{
+  getSubRubros(idRubro: number): Observable<SubRubroInterface[]> {
     this.idRubro = idRubro;
-    return this.http.get<SubRubroInterface[]>(this.apiUrl+'/subrubros/'+this.idRubro)
+    return this.http.get<SubRubroInterface[]>(`${this.apiUrl}/subrubros/${this.idRubro}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          // Maneja el error 404 aquí
+          return of([]); // Devuelve un array vacío en caso de no encontrar subrubros
+        } else {
+          // Si es un error diferente, puedes lanzarlo nuevamente
+          return throwError(error); // O manejarlo de otra forma
+        }
+      })
+    );
+  }
+
+  getActividadesAsignadas(idEvento: number): Observable<ActividadAsignadaInterface[]> {
+    this.idEvento = idEvento;
+    return this.http.get<ActividadAsignadaInterface[]>(`${this.apiUrl}/actividades/${this.idEvento}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          // Maneja el error 404 aquí
+          return of([]); // Devuelve un array vacío en caso de no encontrar subrubros
+        } else {
+          // Si es un error diferente, puedes lanzarlo nuevamente
+          return throwError(error); // O manejarlo de otra forma
+        }
+      })
+    );
   }
 }

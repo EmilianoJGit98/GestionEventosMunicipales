@@ -3,12 +3,24 @@
     Listado de eventos disponibles
   </h5>
   <hr class="p-4l" />
-  <div class="row mb-3">
-    <div class="col-12 col-md-3">
-      <button type="button" class="btn btn-success d-flex align-items-center fw-bold" data-bs-toggle="modal"
+  <div class="d-flex bd-highlight mb-3">
+    <div class="bd-highlight me-3">
+      <button type="button" class="btn btn-success d-flex align-items-center fw-bold mb-1" data-bs-toggle="modal"
         data-bs-target="#nuevoEvento">
-        <mat-icon class="text-white m-0 me-3">playlist_add</mat-icon> Crear
+        <mat-icon class="text-white m-0 me-1">playlist_add</mat-icon> Crear
         nuevo evento
+      </button>
+    </div>
+    <div class="bd-highlight">
+      <button type="button" class="btn btn-danger d-flex align-items-center fw-bold mb-1" (click)="mostrarInactivos()">
+        <mat-icon class="text-white m-0 me-1">{{ iconEmpty }}</mat-icon>
+        {{ msjVista }}
+      </button>
+    </div>
+    <div class="ms-auto bd-highlight">
+      <button type="button" class="btn btn-dark d-flex align-items-center fw-bold mb-1" data-bs-toggle="modal"
+        data-bs-target="#qrEventos">
+        <i class="fas fa-qrcode me-1"></i> Ver qr eventos
       </button>
     </div>
   </div>
@@ -33,11 +45,18 @@
                       modificar</span>
                   </button>
                 </li>
-                <li>
+                <li *ngIf="deshabilitados == 1">
                   <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal"
                     data-bs-target="#bajaEvento" (click)="bajaEventoModal(evento)">
                     <span class="fw-bold"><i class="far fa-eye-slash text-danger me-2"></i>
                       Deshabilitar evento</span>
+                  </button>
+                </li>
+                <li *ngIf="deshabilitados == 0">
+                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal"
+                    data-bs-target="#bajaEvento" (click)="bajaEventoModal(evento)">
+                    <span class="fw-bold"><i class="far fa-eye text-success me-2"></i> Habilitar
+                      evento</span>
                   </button>
                 </li>
                 <li>
@@ -49,7 +68,7 @@
                 </li>
                 <li>
                   <button class="fw-bold w-100 bg-light fs-min dropdown-item"
-                    [routerLink]="['actividades/', evento.id]">
+                    [routerLink]="['actividades-asignadas/', evento.id]">
                     <span class="fw-bold"><i class="fas fa-stream text-success me-3"></i> Ver
                       Actividades Asignadas</span>
                   </button>
@@ -61,11 +80,10 @@
             <img class="card-img-top" [src]="evento.imagen | decodebase64 : 'png'" />
           </div>
           <div class="toast-body fs-min">
-            <span class="w-100">Desde: {{ evento.fechaDesde }}</span>
+            <span class="w-100">Desde: {{ evento.fechaDesde | date : "dd-MM-yyyy" }}</span>
             <br />
-            <span class="w-100">Hasta: {{ evento.fechaHasta }}</span>
+            <span class="w-100">Hasta: {{ evento.fechaHasta | date : "dd-MM-yyyy" }}</span>
           </div>
-
         </div>
       </div>
     </div>
@@ -134,7 +152,8 @@
                     }">
                     <i [ngClass]="{
                         'fs-alto mt-2 far fa-check-circle': archivoCargadoAlta,
-                        'fas fs-alto mt-2 fa-cloud-upload-alt': !archivoCargadoAlta
+                        'fas fs-alto mt-2 fa-cloud-upload-alt':
+                          !archivoCargadoAlta
                       }"></i>
                     <p class="fw-bold fs-min mt-2">
                       {{
@@ -144,7 +163,7 @@
                       }}
                     </p>
                   </label>
-                  <input class="input" name="text" id="file" type="file"  accept=".jpg, .jpeg"
+                  <input class="input" name="text" id="file" type="file" accept=".jpg, .jpeg"
                     (change)="onFileChangeAlta($event, formAltaEvento)" />
                 </div>
 
@@ -175,8 +194,8 @@
   </div>
 </div>
 
-<div class="modal fade" id="modificarModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-  aria-labelledby="modalTitleId" aria-hidden="true">
+<div class="modal fade" id="modificarModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="modal-header py-1 border-0">
@@ -188,7 +207,7 @@
       <div class="modal-body">
         <form [formGroup]="formModiEvento" (ngSubmit)="onSubmitModificacion()">
           <div class="row">
-            <input type="" formControlName="id" />
+            <input type="hidden" formControlName="id" />
             <div class="col-12">
               <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
                 *ngIf="formModiEvento.get('nombre')?.errors?.['required']">
@@ -230,7 +249,8 @@
             </div>
             <div class="col-12 text-center">
               <div *ngIf="previsualizacionModi" style="margin-top: 30px">
-                <img class="imgPrevisualizacion" [src]="previsualizacionModi | decodebase64 : 'png'" alt="Vista previa" />
+                <img class="imgPrevisualizacion" [src]="previsualizacionModi | decodebase64 : 'png'"
+                  alt="Vista previa" />
                 <button class="btnReset" (click)="borrarImagen(formModiEvento)" type="button">
                   <i class="fas fa-trash-alt"></i>
                 </button>
@@ -245,7 +265,8 @@
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
           Cancelar
         </button>
-        <button type="button" class="btn btn-sm btn-success" [disabled]="formModiEvento.invalid" (click)="onSubmitModificacion()">
+        <button type="button" class="btn btn-sm btn-success" [disabled]="formModiEvento.invalid"
+          (click)="onSubmitModificacion()">
           Guardar
         </button>
       </div>
@@ -258,14 +279,24 @@
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title family-montserrat" id="modalTitleId">Dar de baja al evento</h5>
+        <h5 *ngIf="deshabilitados == 1" class="modal-title family-montserrat" id="modalTitleId">
+          Dar de baja al evento
+        </h5>
+        <h5 *ngIf="deshabilitados == 0" class="modal-title family-montserrat" id="modalTitleId">
+          Habilitar Evento
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h5 class="fw-bold family-montserrat fs-med text-center">¿Está seguro que desea dar de baja al evento?</h5>
+        <h5 class="fw-bold family-montserrat fs-med text-center" *ngIf="deshabilitados == 1">
+          ¿Está seguro que desea dar de baja al evento?
+        </h5>
+        <h5 class="fw-bold family-montserrat fs-med text-center" *ngIf="deshabilitados == 0">
+          ¿Está seguro que desea habilitar el evento?
+        </h5>
         <form [formGroup]="formBajaEvento" (ngSubmit)="onSubmitBajaEvento()">
-          <input class="fw-bold w-100 text-center" type="" formControlName="idEvento">
-          <input class="fw-bold w-100 text-center" type="" formControlName="activo">
+          <input class="fw-bold w-100 text-center" type="hidden" formControlName="idEvento" />
+          <input class="fw-bold w-100 text-center" type="hidden" formControlName="activo" />
           <!-- <input class="fw-bold w-100 text-center border-0 shadow-sm fs-med text-danger" type="text" formControlName="Nombre"> -->
         </form>
       </div>
@@ -274,10 +305,59 @@
           cancelar
         </button>
         <button type="button" class="btn btn-primary" [disabled]="formBajaEvento.invalid"
-        (click)="onSubmitBajaEvento()">confirmar</button>
+          (click)="onSubmitBajaEvento()">
+          confirmar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="qrEventos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        Qr de enlace a la aplicación de eventos
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active w-50 fw-bold" id="nav-home-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+              Eventos Muncipales
+            </button>
+            <button class="nav-link w-50 fw-bold" id="nav-profile-tab" data-bs-toggle="tab"
+              data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+              Ingreso Camiones
+            </button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active text-center" id="nav-home" role="tabpanel"
+            aria-labelledby="nav-home-tab">
+            <img class="mt-3 border border-dark border-2" src="img/qrGenerales.jpeg" style="width: 300px !important" />
+            <a href="img/qrGenerales.jpeg" download>
+              <button class="btn btn-dark w-100">
+                <i class="fas fa-cloud-download-alt"></i> descargar qr
+              </button>
+            </a>
+          </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <img src="img/qr.png" alt="" />
 
+            <button class="btn btn-dark w-100">
+              <i class="fas fa-cloud-download-alt"></i> descargar qr
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

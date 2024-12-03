@@ -32,11 +32,9 @@ export class HeaderComponent {
 
   validaToken(){
     this.Token = this.tokenService.getAccessToken();
-    // console.log(this.tokenService.getAccessToken());
     if (this.Token == null) {
       this.router.navigateByUrl("login");
     } else {
-      // console.log(this.Token)
     }
   }
 

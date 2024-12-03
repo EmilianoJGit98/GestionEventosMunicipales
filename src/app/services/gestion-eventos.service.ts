@@ -28,9 +28,9 @@ export class EventosDisplayService {
     const accessToken = this.tokenData.getAccessToken();
     const tokenType = this.tokenData.getTokenType();
 
-    data.forEach((value: any, key: string) => {
-      console.log(`Key: ${key}, Value:`, value);
-    });
+    // data.forEach((value: any, key: string) => {
+      // console.log(`Key: ${key}, Value:`, value);
+    // });
 
     // Verifica que ambos valores existan
     if (!accessToken || !tokenType) {
@@ -65,9 +65,9 @@ export class EventosDisplayService {
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
-    data.forEach((value: any, key: string) => {
-      console.log(`Key: ${key}, Value:`, value);
-    });
+    // data.forEach((value: any, key: string) => {
+      // console.log(`Key: ${key}, Value:`, value);
+    // });
 
     const id = data.get('id');
     // const id = data.id
@@ -93,7 +93,7 @@ export class EventosDisplayService {
     });
 
     const id = data.idEvento
-    console.log(data);
+    // console.log(data);
     // Realiza la petición POST
     return this.Http.put<any>(`${this.apiUrl}/estado/${id}`, data, { headers });
   }
@@ -113,10 +113,31 @@ export class EventosDisplayService {
       Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
     });
 
-    const id = data.id
-    console.log({data});
+    // const id = data.id
+    // console.log({data});
 
-    return this.Http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
+    return this.Http.post<any>(`${this.apiUrl}/asignar-actividad`, data, { headers });
+  }
+
+  eliminarAsignacion(data: any): Observable<any>{
+    const accessToken = this.tokenData.getAccessToken();
+    const tokenType = this.tokenData.getTokenType();
+
+     // Verifica que ambos valores existan
+     if (!accessToken || !tokenType) {
+      throw new Error("No se pudo obtener los valores del token.");
+    }
+
+    // Crea las cabeceras de la solicitud
+    const headers = new HttpHeaders({
+      // 'Content-Type': 'multipart/form-data',
+      Authorization: `${tokenType} ${accessToken}` // Usa el tipo de token y el token de acceso
+    });
+
+    // const id = data.id
+    // console.log({data});
+
+    return this.Http.post<any>(`${this.apiUrl}/desasignar-actividad`, data, { headers });
   }
 
   // altaEvento(data: any): Observable<any> {

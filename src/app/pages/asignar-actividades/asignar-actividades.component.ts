@@ -54,8 +54,6 @@ export class AsignarActividadesComponent {
   cargarRubros(): void {
     this.servEventos.getRubros().subscribe(
       (response: any) => {
-        // console.log('Respuesta del servidor:', response.rubros);
-
         if (Array.isArray(response.rubros)) {
           // Si es un array, asignar directamente
           this.rubros = response.rubros;

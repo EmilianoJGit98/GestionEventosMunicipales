@@ -20,9 +20,9 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.loadUserData();
 
-    console.log(this.accessToken)
-    console.log(this.username)
-    console.log(this.tokenType)
+    // console.log(this.accessToken)
+    // console.log(this.username)
+    // console.log(this.tokenType)
 
   }
 
