@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthTokenService {
+  private apiUrl = `${environment.base_url+'/auth'}`;
 
   private readonly TOKEN_KEY = 'access_token';
   private readonly USERNAME = 'username';
@@ -30,7 +32,7 @@ export class AuthTokenService {
       }
     });
 
-    return this.http.post('http://192.168.200.113:8002/api/auth', body.toString(), {
+    return this.http.post(`${this.apiUrl}`, body.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
   }

@@ -81,7 +81,7 @@ export class ActividadesAsignadasComponent {
           this.arrayActividadesAsignadas = data; // Asigna los datos recibidos a la variable
           this.dataSourceActs.data = data; // Asignas los datos al dataSource
           this.dataSourceActs.paginator = this.paginator; // Asigna el paginador después de establecer el dataSource
-          console.log(this.arrayActividadesAsignadas)
+          // console.log(this.arrayActividadesAsignadas)
         } else {
           console.warn('No se encontraron subrubros para el rubro especificado');
           this.arrayActividadesAsignadas = []; // Resetea en caso de que no haya subrubros

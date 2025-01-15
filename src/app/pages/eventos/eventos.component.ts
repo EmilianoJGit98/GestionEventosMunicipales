@@ -358,7 +358,7 @@ export class EventosComponent {
           },
         });
       } else {
-        console.log('El formulario no es válido');
+        // console.log('El formulario no es válido');
       }
     }
   }
@@ -385,11 +385,11 @@ export class EventosComponent {
           });
         },
         error: (error: any) => {
-          console.log('error');
+          // console.log('error');
         },
       });
     } else {
-      console.log('El formulario no es válido');
+      // console.log('El formulario no es válido');
     }
   }
 }

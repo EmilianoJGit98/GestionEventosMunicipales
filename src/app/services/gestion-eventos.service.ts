@@ -3,12 +3,14 @@ import { EventosMunicipalesService } from './eventos-municipales.service'; // As
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthTokenService } from './auth-token.service';
+import { environment } from '../../../environment/environment';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventosDisplayService {
+  private apiUrl = `${environment.base_url+'/eventos'}`;
 
   constructor(private eventosMunicipalesService: EventosMunicipalesService, private Http: HttpClient, private tokenData: AuthTokenService) {}
 
@@ -21,7 +23,7 @@ export class EventosDisplayService {
 
   // private apiUrl = 'http://192.168.0.248:8000/api/eventos';
   // private apiUrl = 'http://192.168.0.77:8000/api/eventos';
-  private apiUrl = 'http://192.168.200.113:8002/api/eventos';
+  // private apiUrl = 'http://192.168.200.113:8002/api/eventos';
 
   altaEvento(data: any): Observable<any> {
     // Obtienes el token y el tipo de token desde AuthTokenService

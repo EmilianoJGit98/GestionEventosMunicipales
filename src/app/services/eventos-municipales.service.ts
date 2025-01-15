@@ -5,16 +5,17 @@ import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { RubroInterface } from '../Models/rubros.model';
 import { SubRubroInterface } from '../Models/subrurbros.model';
 import { ActividadAsignadaInterface } from '../Models/actividad-asignada.model';
-
+import { environment } from '../../../environment/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventosMunicipalesService {
+  private apiUrl = `${environment.base_url+'/eventos'}`;
   // private apiUrl = 'http://192.168.0.248:8000/api/eventos';
   // private apiUrl = 'http://192.168.0.77:8000/api/eventos';
-  private apiUrl = 'http://192.168.200.113:8002/api/eventos';
+  // private apiUrl = 'http://192.168.200.113:8002/api/eventos';
 
   idRubro: number = 0;
   activo: number = 0;
