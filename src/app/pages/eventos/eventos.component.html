@@ -1,88 +1,166 @@
-<div class="container-fluid">
+<div *ngIf="estadoCargaEventos" class="row ConteinerPreloader m-0">
+  <div class="col-12 ConteinerSpinner text-center">
+    <img
+      class="imgSpinner"
+      src="./img/logoMunicipalidadFsa.png"
+      width="100px"
+      height="100px"
+    />
+    <div class="spinner mb-3"></div>
+    <h4
+      class="fw-bold text-white textoSpinner"
+      style="font-weight: bold !important"
+    >
+      Cargando contenido
+    </h4>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="!estadoCargaEventos">
   <h5 class="fs-med fw-bold family-montserrat">
     Listado de eventos disponibles
   </h5>
   <hr class="p-4l" />
   <div class="d-flex bd-highlight mb-3">
     <div class="bd-highlight me-3">
-      <button type="button" class="btn btn-success d-flex align-items-center fw-bold mb-1" data-bs-toggle="modal"
-        data-bs-target="#nuevoEvento">
+      <button
+        type="button"
+        class="btn btn-success d-flex align-items-center fw-bold mb-1"
+        data-bs-toggle="modal"
+        data-bs-target="#nuevoEvento"
+      >
         <mat-icon class="text-white m-0 me-1">playlist_add</mat-icon> Crear
         nuevo evento
       </button>
     </div>
     <div class="bd-highlight">
-      <button type="button" class="btn btn-danger d-flex align-items-center fw-bold mb-1" (click)="mostrarInactivos()">
+      <button
+        type="button"
+        class="btn btn-dark d-flex align-items-center fw-bold mb-1"
+        (click)="mostrarInactivos()"
+      >
         <!-- <mat-icon class="text-white m-0 me-1">{{ iconEmpty }}</mat-icon> -->
         {{ msjVista }}
       </button>
     </div>
     <div class="ms-auto bd-highlight">
-      <button type="button" class="btn btn-dark d-flex align-items-center fw-bold mb-1" data-bs-toggle="modal"
-        data-bs-target="#qrEventos">
+      <button
+        type="button"
+        class="btn btn-dark d-flex align-items-center fw-bold mb-1"
+        data-bs-toggle="modal"
+        data-bs-target="#qrEventos"
+      >
         <i class="fas fa-qrcode me-1"></i> Ver qr eventos
       </button>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-12 col-md-3 col-lg-4 col-xl-2 mb-2 d-flex align-items-stretch" *ngFor="let evento of eventos">
+    <div
+      class="col-12 col-md-3 col-lg-4 col-xl-2 mb-2 d-flex align-items-stretch"
+      *ngFor="let evento of eventos"
+    >
       <div class="w-100 mb-2 d-flex align-items-stretch">
-        <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div
+          class="toast show w-100"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <div class="toast-header py-0">
             <strong class="fs-min w-100">{{ evento.nombre }}</strong>
             <div class="dropdown">
-              <button class="btn btn-sm mb-2 fs-med" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <button
+                class="btn btn-sm mb-2 fs-med"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="fas fa-ellipsis-v"></i>
               </button>
-              <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1">
+              <ul
+                class="dropdown-menu shadow"
+                aria-labelledby="dropdownMenuButton1"
+              >
                 <li>
-                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal"
-                    data-bs-target="#modificarModal" (click)="abrirModal(evento)">
+                  <button
+                    class="fw-bold w-100 bg-light fs-min dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modificarModal"
+                    (click)="abrirModal(evento)"
+                  >
                     <span class="fw-bold w-100">
                       <i class="fas fa-pencil-alt text-warning me-3"></i>
-                      modificar</span>
+                      modificar</span
+                    >
                   </button>
                 </li>
                 <li *ngIf="deshabilitados == 1">
-                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal"
-                    data-bs-target="#bajaEvento" (click)="bajaEventoModal(evento)">
-                    <span class="fw-bold"><i class="far fa-eye-slash text-danger me-2"></i>
-                      Deshabilitar evento</span>
+                  <button
+                    class="fw-bold w-100 bg-light fs-min dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#bajaEvento"
+                    (click)="bajaEventoModal(evento)"
+                  >
+                    <span class="fw-bold"
+                      ><i class="far fa-eye-slash text-danger me-2"></i>
+                      Deshabilitar evento</span
+                    >
                   </button>
                 </li>
                 <li *ngIf="deshabilitados == 0">
-                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" data-bs-toggle="modal"
-                    data-bs-target="#bajaEvento" (click)="bajaEventoModal(evento)">
-                    <span class="fw-bold"><i class="far fa-eye text-success me-2"></i> Habilitar
-                      evento</span>
+                  <button
+                    class="fw-bold w-100 bg-light fs-min dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#bajaEvento"
+                    (click)="bajaEventoModal(evento)"
+                  >
+                    <span class="fw-bold"
+                      ><i class="far fa-eye text-success me-2"></i> Habilitar
+                      evento</span
+                    >
                   </button>
                 </li>
                 <li>
-                  <button class="fw-bold w-100 bg-light fs-min dropdown-item" [routerLink]="['asignarA/', evento.id]">
+                  <button
+                    class="fw-bold w-100 bg-light fs-min dropdown-item"
+                    [routerLink]="['asignarA/', evento.id]"
+                  >
                     <span class="fw-bold">
                       <i class="fas fa-link text-primary me-3"></i> Asignar
-                      actividades</span>
+                      actividades</span
+                    >
                   </button>
                 </li>
                 <li>
-                  <button class="fw-bold w-100 bg-light fs-min dropdown-item"
-                    [routerLink]="['actividades-asignadas/', evento.id]">
-                    <span class="fw-bold"><i class="fas fa-stream text-success me-3"></i> Ver
-                      Actividades Asignadas</span>
+                  <button
+                    class="fw-bold w-100 bg-light fs-min dropdown-item"
+                    [routerLink]="['actividades-asignadas/', evento.id]"
+                  >
+                    <span class="fw-bold"
+                      ><i class="fas fa-stream text-success me-3"></i> Ver
+                      Actividades Asignadas</span
+                    >
                   </button>
                 </li>
               </ul>
             </div>
           </div>
           <div class="toast-header fs-min p-0">
-            <img class="card-img-top" [src]="evento.imagen | decodebase64 : 'png'" />
+            <img
+              class="card-img-top"
+              [src]="evento.imagen | decodebase64 : 'png'"
+            />
           </div>
           <div class="toast-body fs-min">
-            <span class="w-100">Desde: {{ evento.fechaDesde | date : "dd-MM-yyyy" }}</span>
+            <span class="w-100"
+              >Desde: {{ evento.fechaDesde | date : "dd-MM-yyyy" }}</span
+            >
             <br />
-            <span class="w-100">Hasta: {{ evento.fechaHasta | date : "dd-MM-yyyy" }}</span>
+            <span class="w-100"
+              >Hasta: {{ evento.fechaHasta | date : "dd-MM-yyyy" }}</span
+            >
           </div>
         </div>
       </div>
@@ -90,14 +168,31 @@
   </div>
 </div>
 
-<div class="modal fade" id="nuevoEvento" tabindex="-1" aria-labelledby="AltaEventoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+<div
+  class="modal fade"
+  id="nuevoEvento"
+  tabindex="-1"
+  aria-labelledby="AltaEventoModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+  >
     <div class="modal-content">
       <div class="modal-header py-1 border-0">
-        <h5 class="modal-title m-0 fs-med fw-bold mt-2" id="AltaEventoModalLabel" style="font-family: 'Montserrat'">
+        <h5
+          class="modal-title m-0 fs-med fw-bold mt-2"
+          id="AltaEventoModalLabel"
+          style="font-family: 'Montserrat'"
+        >
           Crear nuevo evento
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="formAltaEvento" (ngSubmit)="onSubmit()">
@@ -105,14 +200,23 @@
             <div class="col-12 col-lg-6">
               <div class="row">
                 <div class="col-12">
-                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                    *ngIf="formAltaEvento.get('nombre')?.errors?.['required']">
+                  <div
+                    class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('nombre')?.errors?.['required']"
+                  >
                     Debe completar este campo.
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                      id="nombre" formControlName="nombre" placeholder="" />
-                    <label class="fw-bold fs-min" for="nombre">Nombre del Evento</label>
+                    <input
+                      type="text"
+                      class="form-control border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
+                      id="nombre"
+                      formControlName="nombre"
+                      placeholder=""
+                    />
+                    <label class="fw-bold fs-min" for="nombre"
+                      >Nombre del Evento</label
+                    >
                   </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -120,10 +224,16 @@
                     Opcional.
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="date"
+                    <input
+                      type="date"
                       class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                      formControlName="fechaDesde" id="fechaDesde" placeholder="" />
-                    <label class="fw-bold fs-min" for="fechaDesde">Inicio</label>
+                      formControlName="fechaDesde"
+                      id="fechaDesde"
+                      placeholder=""
+                    />
+                    <label class="fw-bold fs-min" for="fechaDesde"
+                      >Inicio</label
+                    >
                   </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -131,10 +241,16 @@
                     Opcional.
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="date"
+                    <input
+                      type="date"
                       class="form-control fs-min border-0 rounded-0 border-bottom border-2 shadow-sm fw-bold"
-                      formControlName="fechaHasta" id="fechaHasta" placeholder="" />
-                    <label class="fw-bold fs-min" for="fechaHasta">Finalización</label>
+                      formControlName="fechaHasta"
+                      id="fechaHasta"
+                      placeholder=""
+                    />
+                    <label class="fw-bold fs-min" for="fechaHasta"
+                      >Finalización</label
+                    >
                   </div>
                 </div>
               </div>
@@ -142,35 +258,56 @@
             <div class="col-12 col-lg-6">
               <div class="row">
                 <div class="col-12 col-md-12">
-                  <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                    *ngIf="formAltaEvento.get('imagen')?.errors?.['required']">
+                  <div
+                    class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                    *ngIf="formAltaEvento.get('imagen')?.errors?.['required']"
+                  >
                     Este campo es obligatorio.
                   </div>
-                  <label for="file" [ngClass]="{
+                  <label
+                    for="file"
+                    [ngClass]="{
                       inputCargado: archivoCargadoAlta,
                       inputVacio: !archivoCargadoAlta
-                    }">
-                    <i [ngClass]="{
+                    }"
+                  >
+                    <i
+                      [ngClass]="{
                         'fs-alto mt-2 far fa-check-circle': archivoCargadoAlta,
                         'fas fs-alto mt-2 fa-cloud-upload-alt':
                           !archivoCargadoAlta
-                      }"></i>
+                      }"
+                    ></i>
                     <p class="fw-bold fs-min mt-2">
                       {{
-                      archivoCargadoAlta
-                      ? "Archivo Seleccionado"
-                      : "Seleccione la imagen que identifique al evento"
+                        archivoCargadoAlta
+                          ? "Archivo Seleccionado"
+                          : "Seleccione la imagen que identifique al evento"
                       }}
                     </p>
                   </label>
-                  <input class="input" name="text" id="file" type="file" accept=".jpg, .jpeg"
-                    (change)="onFileChangeAlta($event, formAltaEvento)" />
+                  <input
+                    class="input"
+                    name="text"
+                    id="file"
+                    type="file"
+                    accept=".jpg, .jpeg"
+                    (change)="onFileChangeAlta($event, formAltaEvento)"
+                  />
                 </div>
 
                 <div class="col-12 text-center">
                   <div *ngIf="previsualizacionAlta" style="margin-top: 10px">
-                    <img class="imgPrevisualizacion" [src]="previsualizacionAlta" alt="Vista previa" />
-                    <button class="btnReset" (click)="borrarImagenAlta(formAltaEvento)" type="button">
+                    <img
+                      class="imgPrevisualizacion"
+                      [src]="previsualizacionAlta"
+                      alt="Vista previa"
+                    />
+                    <button
+                      class="btnReset"
+                      (click)="borrarImagenAlta(formAltaEvento)"
+                      type="button"
+                    >
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
@@ -183,10 +320,19 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-sm btn-secondary"
+          data-bs-dismiss="modal"
+        >
           Cancelar
         </button>
-        <button type="button" class="btn btn-sm btn-success" [disabled]="formAltaEvento.invalid" (click)="onSubmit()">
+        <button
+          type="button"
+          class="btn btn-sm btn-success"
+          [disabled]="formAltaEvento.invalid"
+          (click)="onSubmit()"
+        >
           Guardar
         </button>
       </div>
@@ -194,64 +340,123 @@
   </div>
 </div>
 
-<div class="modal fade" id="modificarModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-  role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+<div
+  class="modal fade"
+  id="modificarModal"
+  tabindex="-1"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+  >
     <div class="modal-content">
       <div class="modal-header py-1 border-0">
-        <h5 class="modal-title m-0 fs-med fw-bold mt-2" style="font-family: 'Montserrat'">
+        <h5
+          class="modal-title m-0 fs-med fw-bold mt-2"
+          style="font-family: 'Montserrat'"
+        >
           Modificar el evento
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="formModiEvento" (ngSubmit)="onSubmitModificacion()">
           <div class="row">
             <input type="hidden" formControlName="id" />
             <div class="col-12">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formModiEvento.get('nombre')?.errors?.['required']">
+              <div
+                class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('nombre')?.errors?.['required']"
+              >
                 Debe completar este campo.
               </div>
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="ModiNombre" formControlName="nombre" />
-                <label for="Modinombre" class="form-label">Nombre del Evento</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="ModiNombre"
+                  formControlName="nombre"
+                />
+                <label for="Modinombre" class="form-label"
+                  >Nombre del Evento</label
+                >
               </div>
             </div>
             <div class="col-12 col-md-6">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formModiEvento.get('fechaDesde')?.errors?.['required']">
+              <div
+                class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('fechaDesde')?.errors?.['required']"
+              >
                 Debe completar este campo.
               </div>
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="ModifechaDesde" formControlName="fechaDesde" />
-                <label for="ModifechaDesde" class="form-label">Fecha Desde</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="ModifechaDesde"
+                  formControlName="fechaDesde"
+                />
+                <label for="ModifechaDesde" class="form-label"
+                  >Fecha Desde</label
+                >
               </div>
             </div>
             <div class="col-12 col-md-6">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formModiEvento.get('fechaHasta')?.errors?.['required']">
+              <div
+                class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('fechaHasta')?.errors?.['required']"
+              >
                 Este campo es obligatorio.
               </div>
               <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="ModifechaHasta" formControlName="fechaHasta" />
-                <label for="ModifechaHasta" class="form-label">Fecha Hasta</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="ModifechaHasta"
+                  formControlName="fechaHasta"
+                />
+                <label for="ModifechaHasta" class="form-label"
+                  >Fecha Hasta</label
+                >
               </div>
             </div>
 
             <div class="col-12 col-md-12">
-              <div class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
-                *ngIf="formModiEvento.get('imagen')?.errors?.['required']">
+              <div
+                class="fs-min- text-danger p-0 px-0 fw-bold ms-1"
+                *ngIf="formModiEvento.get('imagen')?.errors?.['required']"
+              >
                 Este campo es obligatorio.
               </div>
-              <input class="form-control w-100" id="fileInputId" type="file" accept=".jpg, .jpeg"
-                (change)="onFileChange($event, formModiEvento)" />
+              <input
+                class="form-control w-100"
+                id="fileInputId"
+                type="file"
+                accept=".jpg, .jpeg"
+                (change)="onFileChange($event, formModiEvento)"
+              />
             </div>
             <div class="col-12 text-center">
               <div *ngIf="previsualizacionModi" style="margin-top: 30px">
-                <img class="imgPrevisualizacion" [src]="previsualizacionModi | decodebase64 : 'png'"
-                  alt="Vista previa" />
-                <button class="btnReset" (click)="borrarImagen(formModiEvento)" type="button">
+                <img
+                  class="imgPrevisualizacion"
+                  [src]="previsualizacionModi | decodebase64 : 'png'"
+                  alt="Vista previa"
+                />
+                <button
+                  class="btnReset"
+                  (click)="borrarImagen(formModiEvento)"
+                  type="button"
+                >
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
@@ -262,11 +467,19 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-sm btn-secondary"
+          data-bs-dismiss="modal"
+        >
           Cancelar
         </button>
-        <button type="button" class="btn btn-sm btn-success" [disabled]="formModiEvento.invalid"
-          (click)="onSubmitModificacion()">
+        <button
+          type="button"
+          class="btn btn-sm btn-success"
+          [disabled]="formModiEvento.invalid"
+          (click)="onSubmitModificacion()"
+        >
           Guardar
         </button>
       </div>
@@ -274,29 +487,67 @@
   </div>
 </div>
 
-<div class="modal fade" id="bajaEvento" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-  aria-labelledby="modalTitleId" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+<div
+  class="modal fade"
+  id="bajaEvento"
+  tabindex="-1"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+    role="document"
+  >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 *ngIf="deshabilitados == 1" class="modal-title family-montserrat" id="modalTitleId">
+        <h5
+          *ngIf="deshabilitados == 1"
+          class="modal-title family-montserrat"
+          id="modalTitleId"
+        >
           Dar de baja al evento
         </h5>
-        <h5 *ngIf="deshabilitados == 0" class="modal-title family-montserrat" id="modalTitleId">
+        <h5
+          *ngIf="deshabilitados == 0"
+          class="modal-title family-montserrat"
+          id="modalTitleId"
+        >
           Habilitar Evento
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <h5 class="fw-bold family-montserrat fs-med text-center" *ngIf="deshabilitados == 1">
+        <h5
+          class="fw-bold family-montserrat fs-med text-center"
+          *ngIf="deshabilitados == 1"
+        >
           ¿Está seguro que desea dar de baja al evento?
         </h5>
-        <h5 class="fw-bold family-montserrat fs-med text-center" *ngIf="deshabilitados == 0">
+        <h5
+          class="fw-bold family-montserrat fs-med text-center"
+          *ngIf="deshabilitados == 0"
+        >
           ¿Está seguro que desea habilitar el evento?
         </h5>
         <form [formGroup]="formBajaEvento" (ngSubmit)="onSubmitBajaEvento()">
-          <input class="fw-bold w-100 text-center" type="hidden" formControlName="idEvento" />
-          <input class="fw-bold w-100 text-center" type="hidden" formControlName="activo" />
+          <input
+            class="fw-bold w-100 text-center"
+            type="hidden"
+            formControlName="idEvento"
+          />
+          <input
+            class="fw-bold w-100 text-center"
+            type="hidden"
+            formControlName="activo"
+          />
           <!-- <input class="fw-bold w-100 text-center border-0 shadow-sm fs-med text-danger" type="text" formControlName="Nombre"> -->
         </form>
       </div>
@@ -304,8 +555,12 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           cancelar
         </button>
-        <button type="button" class="btn btn-primary" [disabled]="formBajaEvento.invalid"
-          (click)="onSubmitBajaEvento()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="formBajaEvento.invalid"
+          (click)="onSubmitBajaEvento()"
+        >
           confirmar
         </button>
       </div>
@@ -313,19 +568,43 @@
   </div>
 </div>
 
-<div class="modal fade" id="qrEventos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-  aria-labelledby="modalTitleId" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+<div
+  class="modal fade"
+  id="qrEventos"
+  tabindex="-1"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+    role="document"
+  >
     <div class="modal-content">
       <div class="modal-header">
         Qr de enlace a la aplicación de eventos
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link active w-50 fw-bold" id="nav-home-tab" data-bs-toggle="tab"
-              data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+            <button
+              class="nav-link active w-50 fw-bold"
+              id="nav-home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-home"
+              type="button"
+              role="tab"
+              aria-controls="nav-home"
+              aria-selected="true"
+            >
               Eventos Muncipales
             </button>
             <!-- <button class="nav-link w-50 fw-bold" id="nav-profile-tab" data-bs-toggle="tab"
@@ -335,16 +614,29 @@
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active text-center" id="nav-home" role="tabpanel"
-            aria-labelledby="nav-home-tab">
-            <img class="mt-3 border border-dark border-2" src="img/qrGenerales.jpeg" style="width: 300px !important" />
+          <div
+            class="tab-pane fade show active text-center"
+            id="nav-home"
+            role="tabpanel"
+            aria-labelledby="nav-home-tab"
+          >
+            <img
+              class="mt-3 border border-dark border-2"
+              src="img/qrGenerales.jpeg"
+              style="width: 300px !important"
+            />
             <a href="img/qrGenerales.jpeg" download>
               <button class="btn btn-dark w-100">
                 <i class="fas fa-cloud-download-alt"></i> descargar qr
               </button>
             </a>
           </div>
-          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <div
+            class="tab-pane fade"
+            id="nav-profile"
+            role="tabpanel"
+            aria-labelledby="nav-profile-tab"
+          >
             <img src="img/qr.png" alt="" />
 
             <button class="btn btn-dark w-100">

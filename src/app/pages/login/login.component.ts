@@ -51,20 +51,18 @@ export class LoginComponent {
               showCloseButton: true,
             });
 
-            this.router.navigateByUrl('layout');
+            this.router.navigateByUrl('layout/eventos');
             // this.router.navigateByUrl("dashboard");
           }
         },
         (error) => {
-
           if (error) {
             const excepcionLogin: any = {
               'USUARIO DE BAJA':
                 'El usuario está deshabilitado, comuniquese con el administrador', // [400]
               'Token Expirado.':
                 'La sesión caducó, por favor vuelva a iniciar sesión.', // [401]
-              'CLAVE INCORRECTA':
-                'Clave Incorrecta.', // [400]
+              'CLAVE INCORRECTA': 'Clave Incorrecta.', // [400]
               'USUARIO INEXISTENTE':
                 'No se encontró el usuario ingresado, intente con otro.', // [404]
               'NO TIENE ACCESO AL MODULO':
@@ -75,9 +73,11 @@ export class LoginComponent {
                 'La contraseña se encuentra expirada, comuniquese con el administrador.', // [426]
             };
 
-             // Mostrar el mensaje de error correspondiente
-        const errorMessage = excepcionLogin[error.detail] || error.detail || "Ocurrió un error inesperado.";
-
+            // Mostrar el mensaje de error correspondiente
+            const errorMessage =
+              excepcionLogin[error.detail] ||
+              error.detail ||
+              'Ocurrió un error inesperado.';
 
             Swal.fire({
               icon: 'error',

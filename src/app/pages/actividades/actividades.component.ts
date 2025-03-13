@@ -19,7 +19,6 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { EventosDisplayService } from '../../services/gestion-eventos.service';
 
-
 @Component({
   selector: 'app-actividades',
   standalone: true,
@@ -34,10 +33,10 @@ import { EventosDisplayService } from '../../services/gestion-eventos.service';
     MatPaginator,
     MatInputModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './actividades.component.html',
-  styleUrls: ['./actividades.component.css'] // Asegúrate de que sea styleUrls aquí
+  styleUrls: ['./actividades.component.css'], // Asegúrate de que sea styleUrls aquí
 })
 export class ActividadesComponent implements OnInit {
   IdEvento: number = 0;
@@ -53,9 +52,14 @@ export class ActividadesComponent implements OnInit {
   dataObject: any;
   arraySubrubros: SubRubroInterface[] = [];
 
-
-  displayedColumnsAsig: string[] = ['idSubRubro', 'Descripcion', 'Importe', 'Seleccionar'];
-  dataSourceAsig: MatTableDataSource<SubRubroInterface> = new MatTableDataSource();
+  displayedColumnsAsig: string[] = [
+    'idSubRubro',
+    'Descripcion',
+    'Importe',
+    'Seleccionar',
+  ];
+  dataSourceAsig: MatTableDataSource<SubRubroInterface> =
+    new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator; // Usar ViewChild para obtener una referencia del paginator definido en el HTML
   @ViewChild(MatPaginator) paginatorResponsive!: MatPaginator; // Usar ViewChild para obtener una referencia del paginator definido en el HTML
@@ -66,18 +70,16 @@ export class ActividadesComponent implements OnInit {
     private EventosMunicipalesService: EventosMunicipalesService,
     private formBuilder: FormBuilder,
     private gestionEventosService: EventosDisplayService,
-    private router: Router,
-  ) {
-
-  }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.IdEvento = +params['idEvento'];
       this.IdRubro = +params['idRubro'];
-    })
+    });
 
-    this.getSubRubros(this.IdRubro)
+    this.getSubRubros(this.IdRubro);
     this.getActividadesxEvento(this.IdEvento);
   }
 
@@ -92,19 +94,25 @@ export class ActividadesComponent implements OnInit {
       return;
     }
 
-    this.EventosMunicipalesService.getActividadesAsignadas(this.IdEvento).subscribe(
+    this.EventosMunicipalesService.getActividadesAsignadas(
+      this.IdEvento
+    ).subscribe(
       (data: any) => {
         if (data) {
           this.arrayActividadesAsignadas = data; // Asigna los datos recibidos a la variable
         } else {
-          console.warn('No se encontraron subrubros para el rubro especificado');
+          console.warn(
+            'No se encontraron subrubros para el rubro especificado'
+          );
           this.arrayActividadesAsignadas = []; // Resetea en caso de que no haya subrubros
         }
       },
       (error: any) => {
         console.error('Error al obtener actividades:', error);
         if (error.status === 404) {
-          console.warn('No se encontraron subrubros para el ID de rubro proporcionado.');
+          console.warn(
+            'No se encontraron subrubros para el ID de rubro proporcionado.'
+          );
         } else {
           console.error('Error inesperado:', error);
         }
@@ -125,16 +133,19 @@ export class ActividadesComponent implements OnInit {
           this.arrayActividadesAsig = data.subrubros;
           this.dataSourceAsig.data = data.subrubros;
           this.dataSourceAsig.paginator = this.paginator;
-
         } else {
-          console.warn('No se encontraron subrubros para el rubro especificado');
+          console.warn(
+            'No se encontraron subrubros para el rubro especificado'
+          );
           this.arrayActividadesAsig = []; // Resetea en caso de que no haya subrubros
         }
       },
       (error: any) => {
         console.error('Error al obtener actividades:', error);
         if (error.status === 404) {
-          console.warn('No se encontraron subrubros para el ID de rubro proporcionado.');
+          console.warn(
+            'No se encontraron subrubros para el ID de rubro proporcionado.'
+          );
         } else {
           console.error('Error inesperado:', error);
         }
@@ -146,12 +157,11 @@ export class ActividadesComponent implements OnInit {
     return this.selectedIds.has(idSubRubro);
   }
 
-  submitForm(){
+  submitForm() {
     this.dataObject = {
       subrubros: this.selectedSubRubros,
       idEvento: this.IdEvento,
-    }
-
+    };
 
     if (this.arrayActividadesAsig.length === 0) {
       Swal.fire({
@@ -186,7 +196,7 @@ export class ActividadesComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               title: '',
-              text: excepcionLogin[error.error.detail] ?? "ocurrio algo",
+              text: excepcionLogin[error.error.detail] ?? 'ocurrio algo',
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
@@ -196,8 +206,6 @@ export class ActividadesComponent implements OnInit {
 
             this.router.navigateByUrl('login');
           }
-
-
         },
       });
     }
@@ -234,7 +242,7 @@ export class ActividadesComponent implements OnInit {
           showConfirmButton: false,
           timerProgressBar: true,
           showCloseButton: true,
-          timer: 1500
+          timer: 1500,
         });
 
         // Desmarcar el checkbox
@@ -255,5 +263,4 @@ export class ActividadesComponent implements OnInit {
       );
     }
   }
-
 }

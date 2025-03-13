@@ -2,59 +2,71 @@
   <h5 class="fs-med fw-bold family-montserrat">
     Asignar actividades a un evento
   </h5>
-  <hr/>
+  <hr />
   <div class="alert alert-primary" role="alert">
     Para asignar actividades existentes a un evento, primero debe seleccionar
     los rubros donde se encuentren dichas actividades y luego presione el boton
     confirmar, se listarán todas las actividades registradas y deberá
     seleccionar al menos una para confirmar la operacion
     <strong></strong>
-
   </div>
 
-
-  <div class="row p-2 ">
+  <div class="row p-2">
     <div class="col-12 col-md-4 p-0">
       <div class="d-flex justify-content-center">
         <mat-form-field class="w-100">
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un registro">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar un registro" />
         </mat-form-field>
       </div>
     </div>
     <div class="col-12 p-0 show-responsive d-none" *ngFor="let rubro of rubros">
       <div class="alert border shadow py-3 px-3" role="alert">
-        <h4 class="alert-heading fs-med py-0">{{ rubro.idrubro }}. {{rubro.Nombre}} </h4>
+        <h4 class="alert-heading fs-med py-0">
+          {{ rubro.idrubro }}. {{ rubro.Nombre }}
+        </h4>
       </div>
     </div>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="shadow border tbafiliados hidden-desktop">
     <ng-container matColumnDef="idrubro">
-      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center"> idrubro </th>
-      <td mat-cell *matCellDef="let element" class="py-0 text-center border-bottom fs-min"> {{element.idrubro}} </td>
+      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+        idrubro
+      </th>
+      <td mat-cell *matCellDef="let element" class="py-0 text-center border-bottom fs-min">
+        {{ element.idrubro }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="Nombre">
-      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center"> Nombre </th>
-      <td mat-cell *matCellDef="let element" class="py-0 text-left border-bottom fs-min-"> {{element.Nombre}} </td>
+      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+        Nombre
+      </th>
+      <td mat-cell *matCellDef="let element" class="py-0 text-left border-bottom fs-min-">
+        {{ element.Nombre }}
+      </td>
     </ng-container>
 
-
     <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center"> acciones </th>
+      <th mat-header-cell *matHeaderCellDef class="mat-th fs-min text-center">
+        acciones
+      </th>
       <td mat-cell *matCellDef="let element" class="text-center border-bottom">
-        <a class="btn btn-sm text-primary rounded-2 p-2 me-2 fs-min fw-bold" [routerLink]="['/layout/eventos/actividades', IdEvento, element.idrubro]" routerLinkActive="router-link-active" >
+        <a class="btn btn-sm text-primary rounded-2 p-2 me-2 fs-min fw-bold" [routerLink]="[
+            '/layout/eventos/actividades',
+            IdEvento,
+            element.idrubro
+          ]" routerLinkActive="router-link-active">
           Asignar Actividades <i class="fas fas fa-link"></i>
         </a>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns" class="fw-bold"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="fw-bold"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="fw-bold"></tr>
   </table>
 
   <mat-paginator class="shadow hidden-desktop" [length]="100" [pageSize]="8" [pageSizeOptions]="[5, 10, 25, 100]"
     aria-label="Select page">
   </mat-paginator>
-
 </div>

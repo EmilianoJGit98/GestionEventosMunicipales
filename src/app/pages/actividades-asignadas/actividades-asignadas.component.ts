@@ -28,13 +28,12 @@ import { EventosDisplayService } from '../../services/gestion-eventos.service';
     MatPaginator,
     MatInputModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './actividades-asignadas.component.html',
-  styleUrl: './actividades-asignadas.component.css'
+  styleUrl: './actividades-asignadas.component.css',
 })
 export class ActividadesAsignadasComponent {
-
   idEvento: number = 0;
   actividades: ActividadAsignadaInterface[] = [];
   arrayActividadesAsignadas: any[] = [];
@@ -44,8 +43,14 @@ export class ActividadesAsignadasComponent {
   icon: any;
 
   //tabla material
-  displayedColumnsActs: string[] = ['idSubRubro', 'Descripcion', 'Importe', 'Seleccionar'];
-  dataSourceActs: MatTableDataSource<ActividadAsignadaInterface[]> = new MatTableDataSource();
+  displayedColumnsActs: string[] = [
+    'idSubRubro',
+    'Descripcion',
+    'Importe',
+    'Seleccionar',
+  ];
+  dataSourceActs: MatTableDataSource<ActividadAsignadaInterface[]> =
+    new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator; // Usar ViewChild para obtener una referencia del paginator definido en el HTML
   @ViewChild(MatPaginator) paginatorResponsive!: MatPaginator; // Usar ViewChild para obtener una referencia del paginator definido en el HTML
@@ -54,14 +59,12 @@ export class ActividadesAsignadasComponent {
     private EventosMunicipalesService: EventosMunicipalesService,
     private gestionEventosService: EventosDisplayService,
     private route: ActivatedRoute
-  ){
+  ) {}
 
-  }
-
-  ngOnInit(){
-    this.route.params.subscribe(params => {
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
       this.idEvento = +params['idEvento'];
-    })
+    });
     this.getActividadesxEvento(this.idEvento);
   }
 
@@ -74,7 +77,9 @@ export class ActividadesAsignadasComponent {
 
     // console.log(idEvento);
 
-    this.EventosMunicipalesService.getActividadesAsignadas(this.idEvento).subscribe(
+    this.EventosMunicipalesService.getActividadesAsignadas(
+      this.idEvento
+    ).subscribe(
       (data: any) => {
         // Verifica si hay datos antes de asignar
         if (data) {
@@ -83,14 +88,18 @@ export class ActividadesAsignadasComponent {
           this.dataSourceActs.paginator = this.paginator; // Asigna el paginador después de establecer el dataSource
           // console.log(this.arrayActividadesAsignadas)
         } else {
-          console.warn('No se encontraron subrubros para el rubro especificado');
+          console.warn(
+            'No se encontraron subrubros para el rubro especificado'
+          );
           this.arrayActividadesAsignadas = []; // Resetea en caso de que no haya subrubros
         }
       },
       (error: any) => {
         console.error('Error al obtener actividades:', error);
         if (error.status === 404) {
-          console.warn('No se encontraron subrubros para el ID de rubro proporcionado.');
+          console.warn(
+            'No se encontraron subrubros para el ID de rubro proporcionado.'
+          );
         } else {
           console.error('Error inesperado:', error);
         }
@@ -103,13 +112,11 @@ export class ActividadesAsignadasComponent {
     this.dataSourceActs.filter = filterValue.trim().toLowerCase(); // Asignar el valor del filtro
   }
 
-
-  submitForm(){
+  submitForm() {
     this.dataObject = {
       subrubros: this.selectedSubRubros,
       idEvento: this.idEvento,
-    }
-
+    };
 
     if (this.arrayActividadesAsignadas.length === 0) {
       Swal.fire({
@@ -134,10 +141,8 @@ export class ActividadesAsignadasComponent {
             }
           });
         },
-        complete: () => {
-        },
-        error: (error: any) => {
-        },
+        complete: () => {},
+        error: (error: any) => {},
       });
     }
   }
@@ -146,19 +151,17 @@ export class ActividadesAsignadasComponent {
     return this.selectedIds.has(idSubRubro);
   }
 
-  seleccionActividades(event: Event,
-    idSubRubro: number
- ) {
-   const target = event.target as HTMLInputElement;
+  seleccionActividades(event: Event, idSubRubro: number) {
+    const target = event.target as HTMLInputElement;
 
-   if (target.checked) {
-     this.selectedSubRubros.push({
-       idSubRubro: idSubRubro,
-     });
-   } else {
-     this.selectedSubRubros = this.selectedSubRubros.filter(
-       (item) => item.idSubRubro !== idSubRubro
-     );
-   }
- }
+    if (target.checked) {
+      this.selectedSubRubros.push({
+        idSubRubro: idSubRubro,
+      });
+    } else {
+      this.selectedSubRubros = this.selectedSubRubros.filter(
+        (item) => item.idSubRubro !== idSubRubro
+      );
+    }
+  }
 }

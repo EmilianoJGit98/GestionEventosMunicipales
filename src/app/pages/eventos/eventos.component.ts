@@ -66,6 +66,8 @@ export class EventosComponent {
   mostrarComponente: boolean = true;
   submitOK = false;
 
+  estadoCargaEventos: boolean = false;
+
   constructor(
     private servEventos: EventosMunicipalesService,
     private BuildForm: FormBuilder, // private addModal: MatDialog, // private getListEventos: EventosDisplayService
@@ -101,9 +103,12 @@ export class EventosComponent {
     const estadoGuardado = localStorage.getItem('deshabilitados');
     this.deshabilitados = estadoGuardado !== null ? Number(estadoGuardado) : 0;
 
-    this.msjVista = this.deshabilitados === 1 ? 'Ver eventos inactivos' : 'Ver eventos activos';
-    this.iconEmpty = this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
-
+    this.msjVista =
+      this.deshabilitados === 1
+        ? 'Ver eventos inactivos'
+        : 'Ver eventos activos';
+    this.iconEmpty =
+      this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
 
     // this.mostrarInactivos();
 
@@ -115,9 +120,12 @@ export class EventosComponent {
     this.deshabilitados = this.deshabilitados === 1 ? 0 : 1;
 
     // Actualiza el mensaje de vista
-    this.msjVista = this.deshabilitados === 1 ? 'Ver eventos inactivos' : 'Ver eventos activos';
-    this.iconEmpty = this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
-
+    this.msjVista =
+      this.deshabilitados === 1
+        ? 'Mostrar eventos inactivos'
+        : 'Mostrar eventos activos';
+    this.iconEmpty =
+      this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
 
     // Guardar el estado en localStorage
     localStorage.setItem('deshabilitados', String(this.deshabilitados));
@@ -128,10 +136,12 @@ export class EventosComponent {
 
   cargarEventos(deshabiliados: number): void {
     let estadoVista = deshabiliados;
+    this.estadoCargaEventos = true;
 
     this.servEventos.getEventos(estadoVista).subscribe(
       (data: EventoInterface[]) => {
         this.eventos = data;
+        this.estadoCargaEventos = false;
         // console.log(this.eventos); // Para verificar que se están recibiendo los eventos
       },
       (error) => {
@@ -340,19 +350,30 @@ export class EventosComponent {
 
         this.gestionEventos.modificarEvento(formData).subscribe({
           next: (res: any) => {
-            // console.log(res);
+            //console.log(res.message)
+
+            if (
+              res.message ===
+              'No se puede modificar el evento porque ha comenzado, está en curso o ha finalizado.'
+            ) {
+              Swal.fire({
+                icon: 'warning',
+                text: res.message,
+                confirmButtonText: 'finalizar',
+              }).then((result) => {});
+            } else {
+              Swal.fire({
+                icon: 'success',
+                text: 'Evento modificado correctamente',
+                confirmButtonText: 'confirmar',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  location.reload();
+                }
+              });
+            }
           },
-          complete: () => {
-            Swal.fire({
-              icon: 'success',
-              text: 'Evento modificado correctamente',
-              confirmButtonText: 'finalizar',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                location.reload();
-              }
-            });
-          },
+          complete: () => {},
           error: (error: any) => {
             // console.log('error', error);
           },

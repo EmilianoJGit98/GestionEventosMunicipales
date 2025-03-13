@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLinkActive, RouterModule } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLinkActive,
+  RouterModule,
+} from '@angular/router';
 import { EventosMunicipalesService } from '../../services/eventos-municipales.service';
 import { RubroInterface } from '../../Models/rubros.model';
 import { CommonModule } from '@angular/common';
@@ -8,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button'; // Importar el módu
 import { MatIconModule } from '@angular/material/icon'; // Importar el módulo de íconos de Angular Material
 import { MatPaginator } from '@angular/material/paginator'; // Importar el componente paginator de Angular Material para manejar la paginación
 import { MatInputModule } from '@angular/material/input';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';      
 
 @Component({
   selector: 'app-asignar-actividades',
@@ -21,10 +26,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
     MatPaginator, // Importar el módulo paginator de Angular Material para la paginación
     MatInputModule,
     RouterModule,
-    RouterLinkActive
+    RouterLinkActive,
   ],
   templateUrl: './asignar-actividades.component.html',
-  styleUrl: './asignar-actividades.component.css'
+  styleUrl: './asignar-actividades.component.css',
 })
 export class AsignarActividadesComponent {
   IdEvento: number = 1;
@@ -41,14 +46,14 @@ export class AsignarActividadesComponent {
     private route: ActivatedRoute,
     private servEventos: EventosMunicipalesService,
     private router: Router
-  ){}
+  ) {}
 
-  ngOnInit(){
-    this.route.params.subscribe(params => {
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
       this.IdEvento = +params['id'];
-    })
+    });
 
-    this.cargarRubros()
+    this.cargarRubros();
   }
 
   cargarRubros(): void {
@@ -65,7 +70,7 @@ export class AsignarActividadesComponent {
           console.error('La respuesta no es un array ni un objeto:', response);
         }
       },
-      error => {
+      (error) => {
         console.error('Error al obtener los rubros', error); // Manejo de errores
       }
     );
@@ -97,6 +102,4 @@ export class AsignarActividadesComponent {
   //     }
   //   );
   // }
-
 }
-

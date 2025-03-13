@@ -19,8 +19,14 @@ export const routes: Routes = [
       { path: 'eventos', component: EventosComponent },
       { path: 'eventos/actividades/:id', component: ActividadesComponent },
       { path: 'eventos/asignarA/:id', component: AsignarActividadesComponent },
-      { path: 'eventos/actividades/:idEvento/:idRubro', component: ActividadesComponent },
-      { path: 'eventos/actividades-asignadas/:idEvento', component: ActividadesAsignadasComponent },
+      {
+        path: 'eventos/actividades/:idEvento/:idRubro',
+        component: ActividadesComponent,
+      },
+      {
+        path: 'eventos/actividades-asignadas/:idEvento',
+        component: ActividadesAsignadasComponent,
+      },
     ],
   },
 ];
