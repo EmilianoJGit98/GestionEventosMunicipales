@@ -57,14 +57,15 @@ export class EventosComponent {
   archivoCargadoModi: boolean = false;
   previsualizacion: string | null = null;
   deshabilitados: number = 1;
-  msjVista: string = 'Ver eventos inactivos';
-
+  mostrarComponente: boolean = true;
+  submitOK = false;
   previsualizacionAlta: string | null = null;
   previsualizacionModi: string | null = null;
 
-  iconEmpty: string = 'visibility';
-  mostrarComponente: boolean = true;
-  submitOK = false;
+  //variables de estilo dinamicas
+  buttonClass: string = 'btn-danger';
+  msjVista: string = 'Ver eventos inactivos';
+  msjListado: string = 'Listado de eventos activos';
 
   estadoCargaEventos: boolean = false;
 
@@ -107,10 +108,14 @@ export class EventosComponent {
       this.deshabilitados === 1
         ? 'Ver eventos inactivos'
         : 'Ver eventos activos';
-    this.iconEmpty =
-      this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
 
+    this.msjListado =
+      this.deshabilitados === 1
+        ? 'Listado de eventos activos'
+        : 'Listado de eventos inactivos';
     // this.mostrarInactivos();
+
+    this.buttonClass = this.deshabilitados === 1 ? 'btn-danger' : 'btn-success';
 
     this.cargarEventos(this.deshabilitados); // Carga inicialmente los eventos
   }
@@ -119,13 +124,19 @@ export class EventosComponent {
     // Cambia el estado de deshabilitados
     this.deshabilitados = this.deshabilitados === 1 ? 0 : 1;
 
+    this.buttonClass =
+      this.buttonClass === 'btn-danger' ? 'btn-success' : 'btn-danger';
+
     // Actualiza el mensaje de vista
     this.msjVista =
       this.deshabilitados === 1
-        ? 'Mostrar eventos inactivos'
-        : 'Mostrar eventos activos';
-    this.iconEmpty =
-      this.deshabilitados === 1 ? 'visibility' : 'visibility_off';
+        ? 'Ver eventos inactivos'
+        : 'Ver eventos activos';
+
+    this.msjListado =
+      this.deshabilitados === 1
+        ? 'Listado de eventos activos'
+        : 'Listado de eventos inactivos';
 
     // Guardar el estado en localStorage
     localStorage.setItem('deshabilitados', String(this.deshabilitados));
